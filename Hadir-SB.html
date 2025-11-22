@@ -174,6 +174,30 @@
     <script>
         let rowCount = 0;
 
+        // Data Peserta Awal
+        const initialData = [
+            { name: "Moch. Salim Somad, S.Kom., M.Pd.,", instansi: "Direktorat Sekolah Dasar" },
+            { name: "Lanny Anggraini, S.Pd., M.A.,", instansi: "Direktorat Sekolah Dasar" },
+            { name: "Waluyo Al Banjari, Phd", instansi: "Direktorat Sekolah Dasar" },
+            { name: "Bintang Adhi Permana, M.Pd", instansi: "SDN Lubang Buaya 01, Jakarta Timur" },
+            { name: "Ucu Samsudin, S.Pd.SD", instansi: "SDN Sriamur 05 Kabupaten Bekasi" },
+            { name: "Lia Emilia, M.Pd", instansi: "SDN Cawang 07 Jakarta Timur" },
+            { name: "Ishak Wijono, M.Pd", instansi: "SDN Sumur Batu 12 Pagi Jakarta Pusat" },
+            { name: "Irfanda Fathan, S.Pd", instansi: "SDN Pekayon 16 Jakarta Timur" },
+            { name: "Didik Rahmadi", instansi: "SDN 11 Pejaten Timur DKI Jakarta" },
+            { name: "Eva Rara Puspita Agustin", instansi: "SDN Kebon Bawang 01 Jakarta Utara" },
+            { name: "Canny Ilmiati", instansi: "SDN Pesanggrahan 02 Jakarta Selatan" },
+            { name: "Mohamad Pratikno, S.Pd.", instansi: "SDN Cengkareng Barat 16 Jakarta Barat" },
+            { name: "Dwi Ayuwani Rahayu, S.Pd", instansi: "SDN Karanggan 03 Kabupaten Bogor" },
+            { name: "Noviani Ekawati", instansi: "SDN Menteng 02 Jakarta Pusat" },
+            { name: "Rizki Setyadi", instansi: "SDN Ragunan 01 Jakarta Selatan" },
+            { name: "Yusuf Kurniawan, M.Pd", instansi: "SDN Petamburan 01 Jakarta Pusat" },
+            { name: "Eri Ermawan", instansi: "SDN Kembangan Utara 10 Jakarta Barat" },
+            { name: "Eko Pujiyanto", instansi: "SDN Palmerah 20 Pagi Jakarta Barat" },
+            { name: "Okto Setya Kurniawan.", instansi: "SDN Ancol 01 Pagi Jakarta Utara" },
+            { name: "Eri Ermawan", instansi: "SDN Kembangan Utara 10 Jakarta Barat" }
+        ];
+
         // === FUNGSI MODAL ===
         function showModal(title, message, type = 'info') {
             const modal = document.getElementById('customModal');
@@ -272,7 +296,7 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-        function addRow() {
+        function addRow(name = '', instansi = '') {
             rowCount++;
             const tableBody = document.getElementById('tableBody');
             const row = document.createElement('tr');
@@ -282,10 +306,10 @@
             row.innerHTML = `
                 <td class="border border-gray-300 px-2 py-2 text-center bg-white">${rowCount}</td>
                 <td class="border border-gray-300 px-2 py-2 bg-white">
-                    <input type="text" placeholder="Nama Peserta" class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:border-blue-500 transition text-sm">
+                    <input type="text" value="${name}" placeholder="Nama Peserta" class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:border-blue-500 transition text-sm">
                 </td>
                 <td class="border border-gray-300 px-2 py-2 bg-white">
-                    <input type="text" placeholder="Nama Instansi" class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:border-blue-500 transition text-sm">
+                    <input type="text" value="${instansi}" placeholder="Nama Instansi" class="w-full p-2 border border-gray-200 rounded focus:outline-none focus:border-blue-500 transition text-sm">
                 </td>
                 <td class="border border-gray-300 px-2 py-2 bg-white">
                     <div class="flex flex-col items-center gap-1">
@@ -330,10 +354,17 @@
             window.print();
         }
 
-        // Tambahkan 5 baris default saat load
+        // Load data awal saat halaman dibuka
         window.onload = function() {
-            for(let i=0; i<5; i++) {
-                addRow();
+            if (initialData.length > 0) {
+                initialData.forEach(data => {
+                    addRow(data.name, data.instansi);
+                });
+            } else {
+                // Fallback jika data kosong, tambah 5 baris kosong
+                for(let i=0; i<5; i++) {
+                    addRow();
+                }
             }
         }
     </script>
