@@ -54,6 +54,35 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+
+        /* --- NEW 3D CARD STYLES --- */
+        .card-3d {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            top: 0;
+            cursor: pointer;
+        }
+
+        .card-3d:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                0 -2px 6px rgba(0,0,0,0.02) inset; /* Inner highlight */
+            z-index: 10;
+        }
+
+        /* Efek tekan tombol */
+        .card-3d:active {
+            transform: translateY(-2px) scale(0.98);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Border bawah tebal untuk efek 3D */
+        .card-blue-bottom { border-bottom: 4px solid #3b82f6; }
+        .card-green-bottom { border-bottom: 4px solid #22c55e; }
+        .card-red-bottom { border-bottom: 4px solid #ef4444; }
+        .card-dark-bottom { border-bottom: 4px solid #1f2937; }
     </style>
 </head>
 <body class="text-gray-800">
@@ -97,72 +126,78 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-            <div class="bg-white overflow-hidden shadow rounded-lg border-l-4 border-blue-500">
-                <div class="p-5">
+        <!-- Stats Cards (UPDATED: 3D & Clickable) -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+            
+            <!-- Card 1: Total Data (Info only) -->
+            <div class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-blue-bottom">
+                <div class="p-6">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <i class="fa-solid fa-database text-blue-400 text-3xl"></i>
+                        <div class="flex-shrink-0 bg-blue-100 rounded-full p-3">
+                            <i class="fa-solid fa-database text-blue-600 text-xl"></i>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Total Data</dt>
-                                <dd class="text-lg font-medium text-gray-900" id="total-count">0</dd>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Data</dt>
+                                <dd class="text-2xl font-extrabold text-gray-900" id="total-count">0</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white overflow-hidden shadow rounded-lg border-l-4 border-green-500">
-                <div class="p-5">
+            <!-- Card 2: Live API (Info only) -->
+            <div class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-green-bottom">
+                <div class="p-6">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <i class="fa-solid fa-check-circle text-green-400 text-3xl"></i>
+                        <div class="flex-shrink-0 bg-green-100 rounded-full p-3">
+                            <i class="fa-solid fa-server text-green-600 text-xl"></i>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Status Aktif</dt>
-                                <dd class="text-lg font-medium text-gray-900">Live API</dd>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Status Server</dt>
+                                <dd class="text-xl font-extrabold text-gray-900">Live API</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg border-l-4 border-red-500">
-                <div class="p-5">
+            <!-- Card 3: Data Admin (Triggers Developer Modal) -->
+            <div onclick="openDeveloperModal()" class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-red-bottom group">
+                <div class="p-6">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <i class="fa-solid fa-check-circle text-green-400 text-3xl"></i>
+                        <div class="flex-shrink-0 bg-red-100 rounded-full p-3 group-hover:bg-red-200 transition">
+                            <i class="fa-solid fa-user-shield text-red-600 text-xl"></i>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Data Admin</dt>
-                                <dd class="text-lg font-medium text-gray-900">Team Pengembang</dd>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Data Admin</dt>
+                                <dd class="text-lg font-extrabold text-gray-900">Team Pengembang</dd>
+                                <p class="text-xs text-red-400 mt-1"><i class="fa-solid fa-hand-pointer mr-1"></i> Klik Detail</p>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow rounded-lg border-l-4 border-black-500">
-                <div class="p-5">
+            <!-- Card 4: Butuh Bantuan (Triggers Message Modal) -->
+            <div onclick="openMessageModal()" class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-dark-bottom group">
+                <div class="p-6">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <i class="fa-solid fa-check-circle text-green-400 text-3xl"></i>
+                        <div class="flex-shrink-0 bg-gray-100 rounded-full p-3 group-hover:bg-gray-200 transition">
+                            <i class="fa-solid fa-headset text-gray-700 text-xl"></i>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Bertanya</dt>
-                                <dd class="text-lg font-medium text-gray-900">Butuh Bantuan</dd>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Layanan</dt>
+                                <dd class="text-lg font-extrabold text-gray-900">Butuh Bantuan</dd>
+                                <p class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-paper-plane mr-1"></i> Kirim Pesan</p>
                             </dl>
                         </div>
                     </div>
                 </div>
             </div>
-
 
         </div>
 
@@ -352,7 +387,7 @@
         </div>
     </footer>
 
-    <!-- ALERT Modal (Existing) -->
+    <!-- ALERT Modal (Existing - Reused for Success/Error) -->
     <div id="customModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
@@ -380,137 +415,190 @@
         </div>
     </div>
 
-    <!-- DOWNLOAD & DEVELOPER Modal (New) -->
+    <!-- DOWNLOAD Modal (Only Downloads) -->
     <div id="downloadModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="download-modal-title" role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Overlay -->
             <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeDownloadModal()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            
-            <!-- Modal Content -->
             <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-2xl sm:w-full relative">
-                
-                <!-- Header -->
                 <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-4 flex justify-between items-center">
                     <h3 class="text-xl font-bold text-white flex items-center">
-                        <i class="fa-solid fa-download mr-3 text-blue-200"></i> Download & Informasi
+                        <i class="fa-solid fa-download mr-3 text-blue-200"></i> Download Aplikasi
                     </h3>
                     <button onclick="closeDownloadModal()" class="text-white hover:text-gray-200 focus:outline-none">
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
                 </div>
-
                 <div class="p-6 bg-gray-50">
-                    
-                    <!-- Section 1: Downloads -->
-                    <div class="mb-6">
-                        <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3 border-b pb-2">
-                            <i class="fa-solid fa-box-open mr-1"></i> File Installer & Panduan
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Aplikasi Utama -->
-                            <a href="https://drive.google.com/uc?export=download&id=1ByIc0QBVxzO8LAdLsT7R6goTFEcztryG" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-400 transition group">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition">
-                                        <i class="fa-brands fa-windows text-lg"></i>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h5 class="text-sm font-bold text-gray-900">Aplikasi Utama</h5>
-                                        <p class="text-xs text-gray-500">Installer Erapor SD 2025</p>
-                                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Aplikasi Utama -->
+                        <a href="https://drive.google.com/uc?export=download&id=1ByIc0QBVxzO8LAdLsT7R6goTFEcztryG" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-400 transition group">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition">
+                                    <i class="fa-brands fa-windows text-lg"></i>
                                 </div>
-                            </a>
-
-                            <!-- Aplikasi Updater -->
-                            <a href="https://drive.google.com/uc?export=download&id=1pv26ysaFSU2POnhlM9KrsEfDUX5e2GZC" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-green-400 transition group">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition">
-                                        <i class="fa-solid fa-rotate text-lg"></i>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h5 class="text-sm font-bold text-gray-900">Aplikasi Updater</h5>
-                                        <p class="text-xs text-gray-500">Pembaruan Sistem</p>
-                                    </div>
+                                <div class="ml-4">
+                                    <h5 class="text-sm font-bold text-gray-900">Aplikasi Utama</h5>
+                                    <p class="text-xs text-gray-500">Installer Erapor SD 2025</p>
                                 </div>
-                            </a>
-
-                            <!-- Panduan Instalasi -->
-                            <a href="https://drive.google.com/uc?export=download&id=1hE6WzqQMrV-ye0w61A_Lp6hrzd3_gFmy" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-orange-400 transition group">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition">
-                                        <i class="fa-solid fa-screwdriver-wrench text-lg"></i>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h5 class="text-sm font-bold text-gray-900">Panduan Lengkap</h5>
-                                        <p class="text-xs text-gray-500">Managemen</p>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <!-- Panduan Admin -->
-                            <a href="https://drive.google.com/uc?export=download&id=1Nt755vBvQc8jD4tZdA9KHisM34cHhFUb" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-400 transition group">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition">
-                                        <i class="fa-solid fa-user-gear text-lg"></i>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h5 class="text-sm font-bold text-gray-900">Panduan Instalasi</h5>
-                                        <p class="text-xs text-gray-500">Cara Install Aplikasi</p>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <!-- Panduan Guru -->
-                            <a href="#" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-pink-400 transition group col-span-1 md:col-span-2">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition">
-                                        <i class="fa-solid fa-chalkboard-user text-lg"></i>
-                                    </div>
-                                    <div class="ml-4">
-                                        <h5 class="text-sm font-bold text-gray-900">FAQ</h5>
-                                        <p class="text-xs text-gray-500">ISeputar Permasalahan</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Section 2: Developers -->
-                    <div>
-                        <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3 border-b pb-2">
-                            <i class="fa-solid fa-code mr-1"></i> Tim Pengembang
-                        </h4>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <!-- Dev 1 -->
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col items-center text-center">
-                                <img src="https://ui-avatars.com/api/?name=Didik+Rahmadi&background=0D8ABC&color=fff&size=64" alt="Didik Rahmadi" class="h-16 w-16 rounded-full mb-3 shadow-sm">
-                                <h5 class="font-bold text-gray-900">Didik Rahmadi</h5>
-                                <p class="text-xs text-gray-500 mb-3">Developer</p>
-                                <a href="https://wa.me/6281285242527" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-700 focus:outline-none focus:border-green-700 focus:ring focus:ring-green-300 disabled:opacity-25 transition">
-                                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Chat WhatsApp
-                                </a>
                             </div>
-
-                            <!-- Dev 2 -->
-                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col items-center text-center">
-                                <img src="https://ui-avatars.com/api/?name=Muhammad+Yusuf&background=6366f1&color=fff&size=64" alt="Muhammad Yusuf Kurniawan" class="h-16 w-16 rounded-full mb-3 shadow-sm">
-                                <h5 class="font-bold text-gray-900">M. Yusuf Kurniawan</h5>
-                                <p class="text-xs text-gray-500 mb-3">Developer</p>
-                                <a href="https://wa.me/6282162920989" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-700 focus:outline-none focus:border-green-700 focus:ring focus:ring-green-300 disabled:opacity-25 transition">
-                                    <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Chat WhatsApp
-                                </a>
+                        </a>
+                        <!-- Aplikasi Updater -->
+                        <a href="https://drive.google.com/uc?export=download&id=1pv26ysaFSU2POnhlM9KrsEfDUX5e2GZC" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-green-400 transition group">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition">
+                                    <i class="fa-solid fa-rotate text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-sm font-bold text-gray-900">Aplikasi Updater</h5>
+                                    <p class="text-xs text-gray-500">Pembaruan Sistem</p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
+                        <!-- Panduan Instalasi -->
+                        <a href="https://drive.google.com/uc?export=download&id=1hE6WzqQMrV-ye0w61A_Lp6hrzd3_gFmy" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-orange-400 transition group">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition">
+                                    <i class="fa-solid fa-screwdriver-wrench text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-sm font-bold text-gray-900">Panduan Lengkap</h5>
+                                    <p class="text-xs text-gray-500">Managemen</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Panduan Admin -->
+                        <a href="https://drive.google.com/uc?export=download&id=1Nt755vBvQc8jD4tZdA9KHisM34cHhFUb" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-400 transition group">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition">
+                                    <i class="fa-solid fa-user-gear text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-sm font-bold text-gray-900">Panduan Instalasi</h5>
+                                    <p class="text-xs text-gray-500">Cara Install Aplikasi</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-
                 </div>
-                
-                <!-- Footer -->
                 <div class="bg-gray-100 px-6 py-3 flex justify-end">
                     <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none" onclick="closeDownloadModal()">
                         Tutup
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DEVELOPER MODAL (NEW - Triggered by Data Admin Card) -->
+    <div id="developerModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="dev-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeDeveloperModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-2xl sm:w-full relative">
+                
+                <div class="bg-gradient-to-r from-red-600 to-pink-600 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-code mr-3 text-red-200"></i> Tim Pengembang
+                    </h3>
+                    <button onclick="closeDeveloperModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-gray-50">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Dev 1 -->
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://ui-avatars.com/api/?name=Didik+Rahmadi&background=ffffff&color=0D8ABC&size=128" alt="Didik Rahmadi" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Didik Rahmadi</h5>
+                            <p class="text-sm text-gray-500 mb-4">Fullstack Developer</p>
+                            <a href="https://wa.me/6281285242527" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+
+                        <!-- Dev 2 -->
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-indigo-400 to-indigo-600 mb-4">
+                                <img src="https://ui-avatars.com/api/?name=Muhammad+Yusuf&background=ffffff&color=6366f1&size=128" alt="Muhammad Yusuf Kurniawan" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">M. Yusuf Kurniawan</h5>
+                            <p class="text-sm text-gray-500 mb-4">System Analyst</p>
+                            <a href="https://wa.me/6282162920989" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-100 px-6 py-3 flex justify-end">
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none" onclick="closeDeveloperModal()">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MESSAGE MODAL (NEW - Triggered by Butuh Bantuan Card) -->
+    <div id="messageModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="msg-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeMessageModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full relative">
+                
+                <div class="bg-gray-800 px-6 py-4 flex justify-between items-center border-b border-gray-700">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-envelope mr-3 text-yellow-400"></i> Kirim Pesan Bantuan
+                    </h3>
+                    <button onclick="closeMessageModal()" class="text-gray-400 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-white">
+                    <form id="helpMessageForm" onsubmit="handleSendMessage(event)">
+                        <div class="space-y-4">
+                            <!-- Input NPSN -->
+                            <div>
+                                <label for="msgNpsn" class="block text-sm font-medium text-gray-700 mb-1">NPSN</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-building text-gray-400 text-xs"></i>
+                                    </div>
+                                    <input type="number" name="msgNpsn" id="msgNpsn" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="Contoh: 2010XXXX" required>
+                                </div>
+                            </div>
+
+                            <!-- Input Nama Pengunjung -->
+                            <div>
+                                <label for="msgName" class="block text-sm font-medium text-gray-700 mb-1">Nama Pengunjung</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-user text-gray-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" name="msgName" id="msgName" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="Nama Lengkap Anda" required>
+                                </div>
+                            </div>
+
+                            <!-- Input Massage/Pesan -->
+                            <div>
+                                <label for="msgContent" class="block text-sm font-medium text-gray-700 mb-1">Pesan / Masalah</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <textarea name="msgContent" id="msgContent" rows="4" class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md border p-3" placeholder="Jelaskan kendala yang Anda alami..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                                <i class="fa-solid fa-paper-plane mr-2 mt-0.5"></i> Kirim Pesan
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -558,9 +646,12 @@
         const modalTitle = document.getElementById('modalTitle');
         const modalMessage = document.getElementById('modalMessage');
 
-        // Modal Logic (Download)
+        // Modal Logic (Specific Modals)
         const downloadModal = document.getElementById('downloadModal');
+        const developerModal = document.getElementById('developerModal');
+        const messageModal = document.getElementById('messageModal');
 
+        // --- GENERIC ALERT MODAL ---
         function showModal(title, message, isError = true) {
             modalTitle.textContent = title;
             modalMessage.textContent = message;
@@ -572,7 +663,7 @@
                 icon.className = "fa-solid fa-circle-exclamation text-red-600";
             } else {
                 iconContainer.className = "mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10";
-                icon.className = "fa-solid fa-circle-info text-blue-600";
+                icon.className = "fa-solid fa-circle-check text-blue-600";
             }
             
             modal.classList.add('active');
@@ -582,17 +673,50 @@
             modal.classList.remove('active');
         }
 
-        // Functions for Download Modal
+        // --- DOWNLOAD MODAL FUNCTIONS ---
         function openDownloadModal() {
             downloadModal.classList.add('active');
-            // Prevent body scroll when modal is open
             document.body.style.overflow = 'hidden';
         }
-
         function closeDownloadModal() {
             downloadModal.classList.remove('active');
-            // Restore body scroll
             document.body.style.overflow = 'auto';
+        }
+
+        // --- DEVELOPER MODAL FUNCTIONS ---
+        function openDeveloperModal() {
+            developerModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDeveloperModal() {
+            developerModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- MESSAGE MODAL FUNCTIONS ---
+        function openMessageModal() {
+            messageModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMessageModal() {
+            messageModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function handleSendMessage(e) {
+            e.preventDefault();
+            const npsn = document.getElementById('msgNpsn').value;
+            const name = document.getElementById('msgName').value;
+            const content = document.getElementById('msgContent').value;
+
+            // Simulate sending logic
+            closeMessageModal();
+            
+            // Show success modal instead of alert
+            setTimeout(() => {
+                showModal("Pesan Terkirim", `Terima kasih Sdr/i ${name}. Pesan Anda mengenai NPSN ${npsn} telah kami terima dan akan segera ditindaklanjuti oleh tim kami.`, false);
+                document.getElementById('helpMessageForm').reset();
+            }, 300);
         }
 
         // Initialize
@@ -629,6 +753,8 @@
                 if (e.key === 'Escape') {
                     closeModal();
                     closeDownloadModal();
+                    closeDeveloperModal();
+                    closeMessageModal();
                 }
             });
         });
