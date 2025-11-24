@@ -147,7 +147,6 @@
                 </div>
             </div>
             
-            <!-- Card 2: Panduan Lengkap (Triggers Guide Modal) - CHANGED FROM LIVE API -->
             <div onclick="openGuideModal()" class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-orange-bottom group">
                 <div class="p-6">
                     <div class="flex items-center">
@@ -217,7 +216,7 @@
             <!-- Summary Table -->
             <div class="mt-8 border-t border-gray-200 pt-6">
                 <h4 class="text-sm font-bold text-gray-700 uppercase mb-4 tracking-wider">
-                    <i class="fa-solid fa-list-ol mr-2"></i> Rincian Data (Split View)
+                    <i class="fa-solid fa-list-ol mr-2"></i> Rincian Data 
                 </h4>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 text-sm border border-gray-200 rounded-lg">
@@ -497,7 +496,8 @@
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeDeveloperModal()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-2xl sm:w-full relative">
+            <!-- WIDENED MODAL TO sm:max-w-6xl -->
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-6xl sm:w-full relative">
                 
                 <div class="bg-gradient-to-r from-red-600 to-pink-600 px-6 py-4 flex justify-between items-center">
                     <h3 class="text-xl font-bold text-white flex items-center">
@@ -509,7 +509,8 @@
                 </div>
 
                 <div class="p-6 bg-gray-50">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- CHANGED TO 4 COLUMNS GRID -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Dev 1 -->
                         <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
                             <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
@@ -540,6 +541,29 @@
                             <h5 class="text-lg font-bold text-gray-900">Eko Pujianto</h5>
                             <p class="text-sm text-gray-500 mb-4">Developer</p>
                             <a href="https://wa.me/628113957270" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://akcdn.detik.net.id/community/media/visual/2023/08/07/nissa-sabyan-8_11.jpeg?w=700&q=90" alt="Channy" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Channy Ilmiati</h5>
+                            <p class="text-sm text-gray-500 mb-4">Developer</p>
+                            <a href="https://wa.me/6287809068810" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+
+
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://akcdn.detik.net.id/community/media/visual/2024/12/28/go-yoon-jung-foto-instagram-goyounjung.jpeg?w=620&q=90" alt="Ayu" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Ayu Wani</h5>
+                            <p class="text-sm text-gray-500 mb-4">Analis</p>
+                            <a href="https://wa.me/6281386381950" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
                                 <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
                             </a>
                         </div>
