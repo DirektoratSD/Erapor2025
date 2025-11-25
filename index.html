@@ -103,9 +103,10 @@
                     <button onclick="openDownloadModal()" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition shadow-sm flex items-center">
                         <i class="fa-solid fa-cloud-arrow-down mr-2"></i> Download Aplikasi
                     </button>
-                    <a href="#" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition hidden sm:inline-block">
+                    <!-- Tombol Admin Panel (Updated) -->
+                    <button onclick="openLoginModal()" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition hidden sm:inline-block flex items-center bg-transparent border-0 cursor-pointer">
                         <i class="fa-solid fa-user-tie mr-2"></i>Admin Panel
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -411,6 +412,106 @@
                     <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
                         Tutup
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL (NEW) -->
+    <div id="loginModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="login-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeLoginModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-md sm:w-full relative">
+                
+                <div class="bg-gradient-to-r from-gray-700 to-gray-900 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-user-lock mr-3 text-gray-200"></i> Login Admin
+                    </h3>
+                    <button onclick="closeLoginModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-white">
+                    <form id="adminLoginForm" onsubmit="handleLogin(event)">
+                        <div class="space-y-4">
+                            <!-- Username -->
+                            <div>
+                                <label for="loginUser" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-user text-gray-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" id="loginUser" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="Masukkan Username" required>
+                                </div>
+                            </div>
+                            <!-- Password -->
+                            <div>
+                                <label for="loginPass" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-key text-gray-400 text-xs"></i>
+                                    </div>
+                                    <input type="password" id="loginPass" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="Masukkan Password" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <button type="submit" id="btnLogin" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                                <i class="fa-solid fa-right-to-bracket mr-2 mt-0.5"></i> Masuk
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD MODAL (NEW) -->
+    <div id="adminModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="admin-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeAdminModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <!-- Modal Lebar -->
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-6xl sm:w-full relative">
+                
+                <div class="bg-gradient-to-r from-blue-700 to-indigo-800 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-gauge-high mr-3 text-blue-200"></i> Dashboard Pesan Pengunjung
+                    </h3>
+                    <button onclick="closeAdminModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-gray-50 h-[600px] overflow-y-auto">
+                    <!-- Loading Messages -->
+                    <div id="loadingMessages" class="hidden text-center py-10">
+                        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-600 mb-4"></i>
+                        <p class="text-gray-500">Memuat pesan...</p>
+                    </div>
+
+                    <!-- Table Messages -->
+                    <div class="overflow-x-auto shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Waktu</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Whatsapp</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nama</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Pesan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messagesTableBody" class="divide-y divide-gray-200 bg-white">
+                                <!-- Data will be injected here -->
+                            </tbody>
+                        </table>
+                        <div id="noMessages" class="hidden p-8 text-center text-gray-500">
+                            Belum ada pesan masuk.
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -758,7 +859,7 @@
     <!-- JavaScript Logic -->
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbxT2MJLHswBikxCFX3xXLhMRamUijwAUUfvZLcUlmr6Y0azYxgWT_NHsCaRyaChzoUYgA/exec';
-        // URL khusus untuk kirim pesan
+        // URL khusus untuk kirim pesan, login, dan dashboard admin
         const MESSAGE_API_URL = 'https://script.google.com/macros/s/AKfycbw9A7XEzsRBd7GqwDXTnE_dQgr6XYifdTiaNjZLP09flyzz94aHvFX-l-tQmdMuITxcgA/exec';
         
         // State Variables
@@ -804,6 +905,8 @@
         const developerModal = document.getElementById('developerModal');
         const messageModal = document.getElementById('messageModal');
         const guideModal = document.getElementById('guideModal');
+        const loginModal = document.getElementById('loginModal');
+        const adminModal = document.getElementById('adminModal');
 
         // --- GENERIC ALERT MODAL ---
         function showModal(title, message, isError = true) {
@@ -857,7 +960,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        // --- GUIDE MODAL FUNCTIONS (NEW) ---
+        // --- GUIDE MODAL FUNCTIONS ---
         function openGuideModal() {
             guideModal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -867,6 +970,122 @@
             document.body.style.overflow = 'auto';
         }
 
+        // --- LOGIN MODAL FUNCTIONS ---
+        function openLoginModal() {
+            loginModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLoginModal() {
+            loginModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('adminLoginForm').reset();
+        }
+
+        // --- ADMIN DASHBOARD MODAL FUNCTIONS ---
+        function openAdminModal() {
+            adminModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            fetchMessages(); // Ambil pesan saat modal dibuka
+        }
+        function closeAdminModal() {
+            adminModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- LOGIN HANDLER ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+            const btnLogin = document.getElementById('btnLogin');
+
+            // Loading State
+            const originalBtnContent = btnLogin.innerHTML;
+            btnLogin.disabled = true;
+            btnLogin.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Memproses...';
+
+            const formData = new FormData();
+            formData.append('action', 'login');
+            formData.append('username', user);
+            formData.append('password', pass);
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    closeLoginModal();
+                    openAdminModal();
+                    showModal("Login Berhasil", "Selamat datang kembali, Admin.", false);
+                } else {
+                    showModal("Login Gagal", "Username atau Password salah.", true);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal("Error", "Terjadi kesalahan koneksi.", true);
+            })
+            .finally(() => {
+                btnLogin.disabled = false;
+                btnLogin.innerHTML = originalBtnContent;
+            });
+        }
+
+        // --- FETCH MESSAGES FOR ADMIN ---
+        function fetchMessages() {
+            const tableBody = document.getElementById('messagesTableBody');
+            const loading = document.getElementById('loadingMessages');
+            const noData = document.getElementById('noMessages');
+
+            tableBody.innerHTML = '';
+            loading.classList.remove('hidden');
+            noData.classList.add('hidden');
+
+            const formData = new FormData();
+            formData.append('action', 'get_messages');
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.classList.add('hidden');
+                
+                if (data.result === 'success' && data.data && data.data.length > 0) {
+                    data.data.forEach(msg => {
+                        const tr = document.createElement('tr');
+                        
+                        // Format Tanggal
+                        const date = new Date(msg.timestamp);
+                        const formattedDate = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' });
+                        
+                        // Kolom WhatsApp (Link)
+                        const waLink = msg.whatsapp ? `<a href="${msg.whatsapp}" target="_blank" class="text-green-600 hover:text-green-800 font-bold"><i class="fa-brands fa-whatsapp"></i> Chat</a>` : '-';
+
+                        tr.innerHTML = `
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">${formattedDate}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">${waLink}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-bold">${msg.nama || '-'}</td>
+                            <td class="px-3 py-4 text-sm text-gray-500 max-w-xs break-words">${msg.pesan || '-'}</td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                } else {
+                    noData.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loading.classList.add('hidden');
+                noData.innerText = "Gagal memuat pesan.";
+                noData.classList.remove('hidden');
+            });
+        }
+
+        // --- SEND MESSAGE HANDLER ---
         function handleSendMessage(e) {
             e.preventDefault();
             
@@ -902,22 +1121,26 @@
 
             // Siapkan Data untuk Dikirim
             const formData = new FormData();
+            formData.append('action', 'send_message'); // Penting: Action Type
             formData.append('npsn', npsn);
             formData.append('nama', name);
             formData.append('whatsapp', waLink);
             formData.append('pesan', content);
 
-            // Kirim ke AppScript (Gunakan no-cors untuk POST ke GAS dari client-side tanpa error cors browser)
+            // Kirim ke AppScript
             fetch(MESSAGE_API_URL, {
                 method: 'POST',
-                body: formData,
-                mode: 'no-cors' // Penting untuk request simple ke GAS
+                body: formData
             })
-            .then(() => {
-                // Sukses (karena no-cors, kita asumsikan sukses jika tidak ada network error)
-                closeMessageModal();
-                showModal("Pesan Terkirim", `Terima kasih Sdr/i ${name}. Pesan Anda (via WA: ${phone}) telah kami terima.`, false);
-                document.getElementById('helpMessageForm').reset();
+            .then(response => response.json())
+            .then(data => {
+                 if (data.result === 'success') {
+                    closeMessageModal();
+                    showModal("Pesan Terkirim", `Terima kasih Sdr/i ${name}. Pesan Anda (via WA: ${phone}) telah kami terima.`, false);
+                    document.getElementById('helpMessageForm').reset();
+                 } else {
+                    throw new Error('Server returned error');
+                 }
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -967,6 +1190,8 @@
                     closeDeveloperModal();
                     closeMessageModal();
                     closeGuideModal();
+                    closeLoginModal();
+                    closeAdminModal();
                 }
             });
         });
