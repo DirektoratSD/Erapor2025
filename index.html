@@ -103,8 +103,8 @@
                     <button onclick="openDownloadModal()" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition shadow-sm flex items-center">
                         <i class="fa-solid fa-cloud-arrow-down mr-2"></i> Download Aplikasi
                     </button>
-                    <!-- Tombol Admin Panel (Updated) -->
-                    <button onclick="openLoginModal()" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition hidden sm:inline-block flex items-center bg-transparent border-0 cursor-pointer">
+                    <!-- Tombol Admin Panel (Updated Logic) -->
+                    <button onclick="checkAdminAccess()" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition hidden sm:inline-block flex items-center bg-transparent border-0 cursor-pointer">
                         <i class="fa-solid fa-user-tie mr-2"></i>Admin Panel
                     </button>
                 </div>
@@ -475,15 +475,21 @@
             <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeAdminModal()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <!-- Modal Lebar -->
-            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-6xl sm:w-full relative">
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-7xl sm:w-full relative">
                 
                 <div class="bg-gradient-to-r from-blue-700 to-indigo-800 px-6 py-4 flex justify-between items-center">
                     <h3 class="text-xl font-bold text-white flex items-center">
                         <i class="fa-solid fa-gauge-high mr-3 text-blue-200"></i> Dashboard Pesan Pengunjung
                     </h3>
-                    <button onclick="closeAdminModal()" class="text-white hover:text-gray-200 focus:outline-none">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
+                    <!-- ADDED LOGOUT BUTTON -->
+                    <div class="flex items-center space-x-3">
+                        <button onclick="handleLogout()" class="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm font-medium transition flex items-center">
+                            <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                        </button>
+                        <button onclick="closeAdminModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="p-6 bg-gray-50 h-[600px] overflow-y-auto">
@@ -498,10 +504,11 @@
                         <table class="min-w-full divide-y divide-gray-300">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Waktu</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Whatsapp</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nama</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Pesan</th>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 w-24">Waktu</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-32">Whatsapp</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-32">Nama</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-64">Pesan</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-64">Jawaban (Admin)</th>
                                 </tr>
                             </thead>
                             <tbody id="messagesTableBody" class="divide-y divide-gray-200 bg-white">
@@ -512,6 +519,94 @@
                             Belum ada pesan masuk.
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PUBLIC MESSAGES MODAL (Updated: With NPSN Search First) -->
+    <div id="publicMessagesModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="pub-msg-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closePublicMessagesModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <!-- Modal Lebar -->
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-5xl sm:w-full relative">
+                
+                <div class="bg-gradient-to-r from-teal-600 to-emerald-600 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-comments mr-3 text-teal-100"></i> Daftar Pertanyaan & Jawaban
+                    </h3>
+                    <button onclick="closePublicMessagesModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-gray-50 min-h-[400px] flex flex-col">
+                    
+                    <!-- SEARCH SECTION (DEFAULT VIEW) -->
+                    <div id="publicSearchContainer" class="flex flex-col items-center justify-center flex-grow py-8 space-y-6">
+                        <div class="bg-teal-100 p-4 rounded-full">
+                            <i class="fa-solid fa-magnifying-glass-location text-teal-600 text-4xl"></i>
+                        </div>
+                        <h4 class="text-gray-700 font-semibold text-xl text-center">Cari Pesan Berdasarkan NPSN</h4>
+                        <p class="text-gray-500 text-sm text-center max-w-md">Masukkan Nomor Pokok Sekolah Nasional (NPSN) Anda untuk melihat riwayat pertanyaan dan balasan dari admin.</p>
+                        
+                        <div class="flex w-full max-w-md shadow-sm rounded-md">
+                            <div class="relative flex-grow focus-within:z-10">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-school text-gray-400"></i>
+                                </div>
+                                <input type="number" id="publicNpsnInput" class="focus:ring-teal-500 focus:border-teal-500 block w-full rounded-none rounded-l-md pl-10 sm:text-sm border-gray-300 border py-3" placeholder="Contoh: 2010XXXX">
+                            </div>
+                            <button onclick="searchPublicMessages()" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-transparent text-sm font-medium rounded-r-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
+                                <i class="fa-solid fa-search"></i>
+                                <span>Cari</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Loading -->
+                    <div id="loadingPublicMessages" class="hidden text-center py-12 flex-grow flex flex-col justify-center items-center">
+                        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-teal-600 mb-4"></i>
+                        <p class="text-gray-500">Sedang mencari data...</p>
+                    </div>
+
+                    <!-- RESULTS TABLE (INITIALLY HIDDEN) -->
+                    <div id="publicResultsContainer" class="hidden flex-col h-full">
+                        <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-3">
+                            <div>
+                                <h5 class="text-sm font-bold text-gray-700">Hasil Pencarian NPSN: <span id="resultNpsnDisplay" class="text-teal-600 font-mono text-lg ml-1"></span></h5>
+                            </div>
+                            <button onclick="resetPublicSearch()" class="text-sm text-teal-600 hover:text-teal-800 font-medium flex items-center bg-teal-50 px-3 py-1 rounded-full hover:bg-teal-100 transition">
+                                <i class="fa-solid fa-arrow-left mr-2"></i> Cari NPSN Lain
+                            </button>
+                        </div>
+
+                        <div class="overflow-y-auto shadow ring-1 ring-black ring-opacity-5 rounded-lg flex-grow max-h-[400px]">
+                            <table class="min-w-full divide-y divide-gray-300">
+                                <thead class="bg-gray-50 sticky top-0 z-10">
+                                    <tr>
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-bold text-gray-900 sm:pl-6 w-32 bg-gray-50">NPSN</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-bold text-gray-900 w-1/2 bg-gray-50">Pesan / Pertanyaan</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-bold text-gray-900 w-1/2 bg-gray-50">Jawaban Admin</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="publicMessagesTableBody" class="divide-y divide-gray-200 bg-white">
+                                    <!-- Data will be injected here -->
+                                </tbody>
+                            </table>
+                            <div id="noPublicMessages" class="hidden p-12 text-center text-gray-500 bg-white">
+                                <i class="fa-regular fa-folder-open text-4xl text-gray-300 mb-3"></i>
+                                <p>Belum ada riwayat pesan untuk NPSN ini.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-100 px-6 py-3 flex justify-end">
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none" onclick="closePublicMessagesModal()">
+                        Tutup
+                    </button>
                 </div>
             </div>
         </div>
@@ -803,9 +898,14 @@
                             </div>
                         </div>
 
-                        <div class="mt-6">
-                            <button type="submit" id="btnSendMsg" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                        <!-- UPDATED BUTTON SECTION -->
+                        <div class="mt-6 flex space-x-3">
+                            <button type="submit" id="btnSendMsg" class="flex-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
                                 <i class="fa-solid fa-paper-plane mr-2 mt-0.5"></i> Kirim Pesan
+                            </button>
+                            
+                            <button type="button" onclick="openPublicMessagesModal()" class="flex-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition">
+                                <i class="fa-solid fa-comments mr-2 mt-0.5"></i> Lihat Pesan
                             </button>
                         </div>
                     </form>
@@ -907,6 +1007,7 @@
         const guideModal = document.getElementById('guideModal');
         const loginModal = document.getElementById('loginModal');
         const adminModal = document.getElementById('adminModal');
+        const publicMessagesModal = document.getElementById('publicMessagesModal');
 
         // --- GENERIC ALERT MODAL ---
         function showModal(title, message, isError = true) {
@@ -992,7 +1093,38 @@
             document.body.style.overflow = 'auto';
         }
 
-        // --- LOGIN HANDLER ---
+        // --- PUBLIC MESSAGES MODAL FUNCTIONS ---
+        function openPublicMessagesModal() {
+            closeMessageModal(); // <--- Added this line
+            publicMessagesModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Reset state setiap kali modal dibuka
+            resetPublicSearch();
+        }
+        function closePublicMessagesModal() {
+            publicMessagesModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- SESSION MANAGEMENT & LOGIN HANDLER ---
+        
+        // Fungsi cek sesi saat tombol Admin Panel diklik
+        function checkAdminAccess() {
+            const isLoggedIn = localStorage.getItem('isAdminLoggedIn');
+            if (isLoggedIn === 'true') {
+                openAdminModal();
+            } else {
+                openLoginModal();
+            }
+        }
+
+        // Fungsi Logout
+        function handleLogout() {
+            localStorage.removeItem('isAdminLoggedIn');
+            closeAdminModal();
+            showModal("Logout Berhasil", "Anda telah keluar dari panel admin.", false);
+        }
+
         function handleLogin(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value;
@@ -1016,6 +1148,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.result === 'success') {
+                    // SIMPAN SESI KE LOCALSTORAGE
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                    
                     closeLoginModal();
                     openAdminModal();
                     showModal("Login Berhasil", "Selamat datang kembali, Admin.", false);
@@ -1066,10 +1201,18 @@
                         const waLink = msg.whatsapp ? `<a href="${msg.whatsapp}" target="_blank" class="text-green-600 hover:text-green-800 font-bold"><i class="fa-brands fa-whatsapp"></i> Chat</a>` : '-';
 
                         tr.innerHTML = `
-                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">${formattedDate}</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">${waLink}</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-bold">${msg.nama || '-'}</td>
-                            <td class="px-3 py-4 text-sm text-gray-500 max-w-xs break-words">${msg.pesan || '-'}</td>
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 align-top">${formattedDate}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 align-top">${waLink}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-bold align-top">${msg.nama || '-'}</td>
+                            <td class="px-3 py-4 text-sm text-gray-500 max-w-xs break-words align-top">${msg.pesan || '-'}</td>
+                            <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                <div class="flex flex-col space-y-2">
+                                    <textarea id="reply-${msg.rowId}" class="w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 border p-2" rows="2" placeholder="Tulis jawaban...">${msg.jawaban || ''}</textarea>
+                                    <button onclick="handleSaveReply(${msg.rowId})" class="self-end px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition">
+                                        <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan
+                                    </button>
+                                </div>
+                            </td>
                         `;
                         tableBody.appendChild(tr);
                     });
@@ -1084,6 +1227,127 @@
                 noData.classList.remove('hidden');
             });
         }
+
+        // --- FETCH PUBLIC MESSAGES (With Search Logic) ---
+        function resetPublicSearch() {
+            document.getElementById('publicSearchContainer').classList.remove('hidden');
+            document.getElementById('publicResultsContainer').classList.add('hidden');
+            document.getElementById('loadingPublicMessages').classList.add('hidden');
+            document.getElementById('publicNpsnInput').value = '';
+            document.getElementById('publicNpsnInput').focus();
+        }
+
+        function searchPublicMessages() {
+            const inputNpsn = document.getElementById('publicNpsnInput').value.trim();
+            
+            if (!inputNpsn) {
+                showModal("Peringatan", "Harap masukkan NPSN terlebih dahulu.", true);
+                return;
+            }
+
+            // UI Updates
+            document.getElementById('publicSearchContainer').classList.add('hidden');
+            document.getElementById('loadingPublicMessages').classList.remove('hidden');
+            document.getElementById('publicResultsContainer').classList.add('hidden');
+            document.getElementById('resultNpsnDisplay').textContent = inputNpsn;
+
+            const tableBody = document.getElementById('publicMessagesTableBody');
+            const noData = document.getElementById('noPublicMessages');
+            tableBody.innerHTML = '';
+            noData.classList.add('hidden');
+
+            const formData = new FormData();
+            formData.append('action', 'get_messages');
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loadingPublicMessages').classList.add('hidden');
+                document.getElementById('publicResultsContainer').classList.remove('hidden');
+                document.getElementById('publicResultsContainer').classList.add('flex'); // Ensure flex display
+                
+                if (data.result === 'success' && data.data && data.data.length > 0) {
+                    // Filter Data by NPSN
+                    const filteredData = data.data.filter(msg => String(msg.npsn).trim() === inputNpsn);
+
+                    if (filteredData.length > 0) {
+                        filteredData.forEach(msg => {
+                            const tr = document.createElement('tr');
+                            
+                            let jawabanHtml = '<span class="text-gray-400 italic flex items-center"><i class="fa-regular fa-clock mr-1"></i> Menunggu jawaban...</span>';
+                            if (msg.jawaban && msg.jawaban.trim() !== "") {
+                                jawabanHtml = `<div class="bg-teal-50 border-l-4 border-teal-500 p-3 text-gray-700 text-sm rounded shadow-sm">
+                                    <div class="font-bold text-teal-600 mb-1 text-xs uppercase">Jawaban Admin:</div>
+                                    <i class="fa-solid fa-check-circle text-teal-500 mr-1"></i> ${msg.jawaban}
+                                </div>`;
+                            }
+
+                            tr.innerHTML = `
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-teal-700 sm:pl-6 align-top font-mono">${msg.npsn || '-'}</td>
+                                <td class="px-3 py-4 text-sm text-gray-700 align-top break-words">${msg.pesan || '-'}</td>
+                                <td class="px-3 py-4 text-sm text-gray-700 align-top break-words">${jawabanHtml}</td>
+                            `;
+                            tableBody.appendChild(tr);
+                        });
+                    } else {
+                        noData.classList.remove('hidden');
+                    }
+                } else {
+                    noData.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loadingPublicMessages').classList.add('hidden');
+                document.getElementById('publicResultsContainer').classList.remove('hidden');
+                noData.innerText = "Gagal memuat data. Silakan coba lagi.";
+                noData.classList.remove('hidden');
+            });
+        }
+
+        // --- SAVE REPLY HANDLER ---
+        function handleSaveReply(rowId) {
+            const replyInput = document.getElementById(`reply-${rowId}`);
+            const replyText = replyInput.value;
+            const btnSave = replyInput.nextElementSibling; // Tombol Simpan
+
+            // Loading state
+            const originalBtnContent = btnSave.innerHTML;
+            btnSave.disabled = true;
+            btnSave.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+            const formData = new FormData();
+            formData.append('action', 'save_answer');
+            formData.append('row_index', rowId);
+            formData.append('jawaban', replyText);
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    showModal("Berhasil", "Jawaban berhasil disimpan.", false);
+                    // Optional: Refresh table or just keep current state
+                    // fetchMessages(); 
+                } else {
+                    showModal("Gagal", "Gagal menyimpan jawaban.", true);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal("Error", "Terjadi kesalahan koneksi.", true);
+            })
+            .finally(() => {
+                btnSave.disabled = false;
+                btnSave.innerHTML = originalBtnContent;
+            });
+        }
+
 
         // --- SEND MESSAGE HANDLER ---
         function handleSendMessage(e) {
@@ -1192,6 +1456,7 @@
                     closeGuideModal();
                     closeLoginModal();
                     closeAdminModal();
+                    closePublicMessagesModal();
                 }
             });
         });
