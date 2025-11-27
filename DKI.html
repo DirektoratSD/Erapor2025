@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erapor 2025</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/png" href="https://referensi.data.kemendikdasmen.go.id/template/images/logotut.png">   
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Custom Scrollbar for Table */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Modal Transition */
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Pagination Button Styles */
+        .page-btn.active {
+            background-color: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        /* Download Card Hover Effect */
+        .download-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- NEW 3D CARD STYLES --- */
+        .card-3d {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            top: 0;
+            cursor: pointer;
+        }
+
+        .card-3d:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                0 -2px 6px rgba(0,0,0,0.02) inset; /* Inner highlight */
+            z-index: 10;
+        }
+
+        /* Efek tekan tombol */
+        .card-3d:active {
+            transform: translateY(-2px) scale(0.98);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Border bawah tebal untuk efek 3D */
+        .card-blue-bottom { border-bottom: 4px solid #3b82f6; }
+        .card-green-bottom { border-bottom: 4px solid #22c55e; }
+        .card-red-bottom { border-bottom: 4px solid #ef4444; }
+        .card-dark-bottom { border-bottom: 4px solid #1f2937; }
+        .card-orange-bottom { border-bottom: 4px solid #f97316; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm fixed w-full z-10 top-0 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center text-blue-600">
+                        <i class="fa-solid fa-school fa-2x mr-3"></i>
+                        <span class="font-bold text-xl tracking-tight text-gray-900">Erapor<span class="text-blue-600">2025</span></span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <!-- Tombol Download Baru -->
+                    <button onclick="openDownloadModal()" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition shadow-sm flex items-center">
+                        <i class="fa-solid fa-cloud-arrow-down mr-2"></i> Download Aplikasi
+                    </button>
+                    <!-- Tombol Admin Panel -->
+                    <button onclick="checkAdminAccess()" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition hidden sm:inline-block flex items-center bg-transparent border-0 cursor-pointer">
+                        <i class="fa-solid fa-user-tie mr-2"></i>Admin Panel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="pt-24 pb-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                <span class="block xl:inline">Erapor SD 2025</span>
+                <span class="block text-blue-600 xl:inline">Direktorat SD</span>
+            </h1>
+            <p class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+                Sistem informasi terintegrasi menampilkan data real-time pengguna Erapor SD 2025. Gunakan filter di bawah untuk menyaring data spesifik.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+            
+            <!-- Card 1: Total Data (Info only) -->
+            <div class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-blue-bottom">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-blue-100 rounded-full p-3">
+                            <i class="fa-solid fa-database text-blue-600 text-xl"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Download</dt>
+                                <dd class="text-2xl font-extrabold text-gray-900" id="total-count">0</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div onclick="openGuideModal()" class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-orange-bottom group">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-orange-100 rounded-full p-3 group-hover:bg-orange-200 transition">
+                            <i class="fa-solid fa-book-open text-orange-600 text-xl"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Dokumen</dt>
+                                <dd class="text-lg font-extrabold text-gray-900">Panduan Lengkap</dd>
+                                <p class="text-xs text-orange-500 mt-1"><i class="fa-solid fa-eye mr-1"></i> Lihat Preview</p>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Data Admin -->
+            <div onclick="openDeveloperModal()" class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-red-bottom group">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-red-100 rounded-full p-3 group-hover:bg-red-200 transition">
+                            <i class="fa-solid fa-user-shield text-red-600 text-xl"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Data Admin</dt>
+                                <dd class="text-lg font-extrabold text-gray-900">Team Pengembang</dd>
+                                <p class="text-xs text-red-400 mt-1"><i class="fa-solid fa-hand-pointer mr-1"></i> Klik Detail</p>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Butuh Bantuan -->
+            <div onclick="openMessageModal()" class="bg-white overflow-hidden shadow-lg rounded-xl card-3d card-dark-bottom group">
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-gray-100 rounded-full p-3 group-hover:bg-gray-200 transition">
+                            <i class="fa-solid fa-headset text-gray-700 text-xl"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Layanan</dt>
+                                <dd class="text-lg font-extrabold text-gray-900">Butuh Bantuan</dd>
+                                <p class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-paper-plane mr-1"></i> Kirim Pesan</p>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Chart Section -->
+        <div class="bg-white shadow rounded-lg p-6 mb-8" id="chartSection">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="chartTitle">
+                <i class="fa-solid fa-chart-column mr-2 text-blue-500"></i> Statistik Persentase Download (vs Populasi Sekolah)
+            </h3>
+            
+            <!-- Canvas -->
+            <div class="relative h-64 w-full mb-6">
+                <canvas id="provinceChart"></canvas>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="mt-8 border-t border-gray-200 pt-6">
+                <h4 class="text-sm font-bold text-gray-700 uppercase mb-4 tracking-wider">
+                    <i class="fa-solid fa-list-ol mr-2"></i> Rincian Data (Download / Total Sekolah)
+                </h4>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm border border-gray-200 rounded-lg">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <!-- Kolom Kiri -->
+                                <th id="headerCol1" class="px-4 py-2 text-left font-semibold text-gray-600">Provinsi</th>
+                                <th class="px-4 py-2 text-center font-semibold text-gray-600">Dl / Tot</th>
+                                <th class="px-4 py-2 text-right font-semibold text-gray-600">%</th>
+                                
+                                <!-- Pemisah Visual -->
+                                <th class="w-1 bg-gray-100 p-0 border-l border-r border-gray-200"></th>
+                                
+                                <!-- Kolom Kanan -->
+                                <th id="headerCol2" class="px-4 py-2 text-left font-semibold text-gray-600">Provinsi</th>
+                                <th class="px-4 py-2 text-center font-semibold text-gray-600">Dl / Tot</th>
+                                <th class="px-4 py-2 text-right font-semibold text-gray-600">%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Rows injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            
+            <!-- Filters Section -->
+            <div class="bg-gray-50 p-4 border-b border-gray-200">
+                <div class="flex flex-col space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                            <i class="fa-solid fa-filter mr-1"></i> Filter Data
+                        </h3>
+                        <button id="resetFiltersBtn" class="text-xs text-red-600 hover:text-red-800 font-medium hover:underline flex items-center">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Reset Filter
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Filter Provinsi -->
+                        <div class="relative">
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Provinsi</label>
+                            <select id="filterProvinsi" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border">
+                                <option value="">Semua Provinsi</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Filter Kab/Kota -->
+                        <div class="relative">
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Kabupaten/Kota</label>
+                            <select id="filterKabKota" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border">
+                                <option value="">Semua Kab/Kota</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter Kurikulum -->
+                        <div class="relative">
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Kurikulum</label>
+                            <select id="filterKurikulum" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border">
+                                <option value="">Semua Kurikulum</option>
+                            </select>
+                        </div>
+
+                         <!-- Search Box -->
+                         <div class="relative">
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Pencarian</label>
+                            <div class="relative rounded-md shadow-sm">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                                </div>
+                                <input type="text" id="searchInput" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border" placeholder="Cari Sekolah, NPSN...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Controls Row -->
+            <div class="px-4 py-3 border-b border-gray-200 sm:px-6 flex justify-between items-center bg-white">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                    <i class="fa-solid fa-table-list mr-2 text-blue-500"></i> Hasil Data
+                </h3>
+                
+                <!-- Entries Selector -->
+                <div class="flex items-center text-sm text-gray-500">
+                    <span class="mr-2 hidden sm:inline">Show</span>
+                    <select id="rowsPerPage" class="form-select block w-20 pl-3 pr-8 py-1.5 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loading" class="p-12 text-center">
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-600 mb-4"></i>
+                <p class="text-gray-500">Mengambil data dari Database...</p>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-container overflow-x-auto hidden" id="tableWrapper">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">NPSN</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Provinsi</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Kab/Kota</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Sekolah</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Nama Admin</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Jabatan</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Kurikulum</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="tableBody">
+                        <!-- Data rows will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- No Data State -->
+            <div id="noData" class="hidden p-12 text-center text-gray-500">
+                <i class="fa-solid fa-filter-circle-xmark text-4xl mb-3 text-gray-300"></i>
+                <p>Data tidak ditemukan dengan filter tersebut.</p>
+            </div>
+
+            <!-- Pagination Footer -->
+            <div id="paginationFooter" class="bg-white px-4 py-3 border-t border-gray-200 flex items-center justify-between sm:px-6 hidden">
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <p class="text-sm text-gray-700">
+                            Menampilkan <span class="font-medium" id="start-index">0</span> sampai <span class="font-medium" id="end-index">0</span> dari <span class="font-medium" id="total-entries">0</span> data
+                        </p>
+                    </div>
+                    <div>
+                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination" id="pagination-controls">
+                            <!-- Buttons injected by JS -->
+                        </nav>
+                    </div>
+                </div>
+                <!-- Mobile Pagination View -->
+                <div class="flex items-center justify-between w-full sm:hidden">
+                    <button id="btn-prev-mobile" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Prev
+                    </button>
+                    <span class="text-sm text-gray-700">
+                        Hal <span id="mobile-page-num">1</span>
+                    </span>
+                    <button id="btn-next-mobile" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-400">
+                &copy; 2025 Direktorat SD.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ALERT Modal -->
+    <div id="customModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10" id="modalIconContainer">
+                            <i class="fa-solid fa-circle-exclamation text-red-600" id="modalIcon"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modalTitle">Judul Modal</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500" id="modalMessage">Pesan modal disini.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="login-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeLoginModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-md sm:w-full relative">
+                
+                <div class="bg-gradient-to-r from-gray-700 to-gray-900 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-user-lock mr-3 text-gray-200"></i> Login Admin
+                    </h3>
+                    <button onclick="closeLoginModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-white">
+                    <form id="adminLoginForm" onsubmit="handleLogin(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="loginUser" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-user text-gray-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" id="loginUser" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="Masukkan Username" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="loginPass" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-key text-gray-400 text-xs"></i>
+                                    </div>
+                                    <input type="password" id="loginPass" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="Masukkan Password" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <button type="submit" id="btnLogin" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                                <i class="fa-solid fa-right-to-bracket mr-2 mt-0.5"></i> Masuk
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD MODAL -->
+    <div id="adminModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="admin-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeAdminModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-7xl sm:w-full relative">
+                
+                <div class="bg-gradient-to-r from-blue-700 to-indigo-800 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-gauge-high mr-3 text-blue-200"></i> Dashboard Pesan Pengunjung
+                    </h3>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="handleLogout()" class="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm font-medium transition flex items-center">
+                            <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                        </button>
+                        <button onclick="closeAdminModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-gray-50 h-[600px] overflow-y-auto">
+                    <div id="loadingMessages" class="hidden text-center py-10">
+                        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-600 mb-4"></i>
+                        <p class="text-gray-500">Memuat pesan...</p>
+                    </div>
+
+                    <div class="overflow-x-auto shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 w-24">Waktu</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-32">Whatsapp</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-32">Nama</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-64">Pesan</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 w-64">Jawaban (Admin)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messagesTableBody" class="divide-y divide-gray-200 bg-white">
+                                <!-- Data will be injected here -->
+                            </tbody>
+                        </table>
+                        <div id="noMessages" class="hidden p-8 text-center text-gray-500">
+                            Belum ada pesan masuk.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PUBLIC MESSAGES MODAL -->
+    <div id="publicMessagesModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="pub-msg-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closePublicMessagesModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-5xl sm:w-full relative">
+                
+                <div class="bg-gradient-to-r from-teal-600 to-emerald-600 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-comments mr-3 text-teal-100"></i> Daftar Pertanyaan & Jawaban
+                    </h3>
+                    <button onclick="closePublicMessagesModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-gray-50 min-h-[400px] flex flex-col">
+                    
+                    <div id="publicSearchContainer" class="flex flex-col items-center justify-center flex-grow py-8 space-y-6">
+                        <div class="bg-teal-100 p-4 rounded-full">
+                            <i class="fa-solid fa-magnifying-glass-location text-teal-600 text-4xl"></i>
+                        </div>
+                        <h4 class="text-gray-700 font-semibold text-xl text-center">Cari Pesan Berdasarkan NPSN</h4>
+                        <p class="text-gray-500 text-sm text-center max-w-md">Masukkan Nomor Pokok Sekolah Nasional (NPSN) Anda untuk melihat riwayat pertanyaan dan balasan dari admin.</p>
+                        
+                        <div class="flex w-full max-w-md shadow-sm rounded-md">
+                            <div class="relative flex-grow focus-within:z-10">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-school text-gray-400"></i>
+                                </div>
+                                <input type="number" id="publicNpsnInput" class="focus:ring-teal-500 focus:border-teal-500 block w-full rounded-none rounded-l-md pl-10 sm:text-sm border-gray-300 border py-3" placeholder="Contoh: 2010XXXX">
+                            </div>
+                            <button onclick="searchPublicMessages()" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-transparent text-sm font-medium rounded-r-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500">
+                                <i class="fa-solid fa-search"></i>
+                                <span>Cari</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="loadingPublicMessages" class="hidden text-center py-12 flex-grow flex flex-col justify-center items-center">
+                        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-teal-600 mb-4"></i>
+                        <p class="text-gray-500">Sedang mencari data...</p>
+                    </div>
+
+                    <div id="publicResultsContainer" class="hidden flex-col h-full">
+                        <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-3">
+                            <div>
+                                <h5 class="text-sm font-bold text-gray-700">Hasil Pencarian NPSN: <span id="resultNpsnDisplay" class="text-teal-600 font-mono text-lg ml-1"></span></h5>
+                            </div>
+                            <button onclick="resetPublicSearch()" class="text-sm text-teal-600 hover:text-teal-800 font-medium flex items-center bg-teal-50 px-3 py-1 rounded-full hover:bg-teal-100 transition">
+                                <i class="fa-solid fa-arrow-left mr-2"></i> Cari NPSN Lain
+                            </button>
+                        </div>
+
+                        <div class="overflow-y-auto shadow ring-1 ring-black ring-opacity-5 rounded-lg flex-grow max-h-[400px]">
+                            <table class="min-w-full divide-y divide-gray-300">
+                                <thead class="bg-gray-50 sticky top-0 z-10">
+                                    <tr>
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-bold text-gray-900 sm:pl-6 w-32 bg-gray-50">NPSN</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-bold text-gray-900 w-1/2 bg-gray-50">Pesan / Pertanyaan</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-bold text-gray-900 w-1/2 bg-gray-50">Jawaban Admin</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="publicMessagesTableBody" class="divide-y divide-gray-200 bg-white">
+                                    <!-- Data will be injected here -->
+                                </tbody>
+                            </table>
+                            <div id="noPublicMessages" class="hidden p-12 text-center text-gray-500 bg-white">
+                                <i class="fa-regular fa-folder-open text-4xl text-gray-300 mb-3"></i>
+                                <p>Belum ada riwayat pesan untuk NPSN ini.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-100 px-6 py-3 flex justify-end">
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none" onclick="closePublicMessagesModal()">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOWNLOAD Modal -->
+    <div id="downloadModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="download-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeDownloadModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-2xl sm:w-full relative">
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-download mr-3 text-blue-200"></i> Download Aplikasi
+                    </h3>
+                    <button onclick="closeDownloadModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6 bg-gray-50">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Aplikasi Utama -->
+                        <a href="https://drive.google.com/uc?export=download&id=1ByIc0QBVxzO8LAdLsT7R6goTFEcztryG" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-400 transition group">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition">
+                                    <i class="fa-brands fa-windows text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-sm font-bold text-gray-900">Aplikasi Utama</h5>
+                                    <p class="text-xs text-gray-500">Installer Erapor SD 2025</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Aplikasi Updater -->
+                        <a href="https://drive.google.com/uc?export=download&id=1pv26ysaFSU2POnhlM9KrsEfDUX5e2GZC" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-green-400 transition group">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition">
+                                    <i class="fa-solid fa-rotate text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-sm font-bold text-gray-900">Aplikasi Updater</h5>
+                                    <p class="text-xs text-gray-500">Pembaruan Sistem</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Panduan Instalasi -->
+                        <a href="https://drive.google.com/uc?export=download&id=1hE6WzqQMrV-ye0w61A_Lp6hrzd3_gFmy" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-orange-400 transition group">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition">
+                                    <i class="fa-solid fa-screwdriver-wrench text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-sm font-bold text-gray-900">Panduan Lengkap</h5>
+                                    <p class="text-xs text-gray-500">Managemen</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Panduan Admin -->
+                        <a href="https://drive.google.com/uc?export=download&id=1Nt755vBvQc8jD4tZdA9KHisM34cHhFUb" class="download-card block p-4 bg-white border border-gray-200 rounded-lg hover:border-purple-400 transition group">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition">
+                                    <i class="fa-solid fa-user-gear text-lg"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-sm font-bold text-gray-900">Panduan Instalasi</h5>
+                                    <p class="text-xs text-gray-500">Cara Install Aplikasi</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-gray-100 px-6 py-3 flex justify-end">
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none" onclick="closeDownloadModal()">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DEVELOPER MODAL -->
+    <div id="developerModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="dev-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeDeveloperModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-6xl sm:w-full relative">
+                
+                <div class="bg-gradient-to-r from-red-600 to-pink-600 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-code mr-3 text-red-200"></i> Tim Pengembang
+                    </h3>
+                    <button onclick="closeDeveloperModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-gray-50">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Dev List -->
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHhaQJOqHljSR5eva3pP-lneab_7Tke601Q_xhWIYw9CYgykoPKMbLPNDgveib_43GKo4YvXsHJIb8xRBM3-L5t52HCk1g_9u9Qyii2tW6PeKQ9pmB9AjMeHSxWTPtSw/s220/icon.PNG" alt="Bli Pasek" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">I Nyoman Pasek</h5>
+                            <p class="text-sm text-gray-500 mb-4">Pengembang</p>
+                            <a href="https://paseksmanda.blogspot.com/" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-red-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa fa-globe text-lg mr-2"></i> web
+                            </a>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://bangbin85.github.io/Game/IFP2025/Berpacu-Waktu/bangbin_Waktu_File/Bangbin.jpg" alt="Bangbin" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Bangbin</h5>
+                            <p class="text-sm text-gray-500 mb-4">Teknis</p>
+                            <a href="https://wa.me/6281311031067" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://lh3.googleusercontent.com/d/106X0RmRC-YkWYMUnoBHWJjH0vVFoX8NE" alt="Didik Rahmadi" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Didik Rahmadi</h5>
+                            <p class="text-sm text-gray-500 mb-4">Teknis</p>
+                            <a href="https://wa.me/6281285242527" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://api.pifa.co.id/images/img_berita/1702015296.webp" alt="Eko" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Eko Pujianto</h5>
+                            <p class="text-sm text-gray-500 mb-4">Teknis</p>
+                            <a href="https://wa.me/628113957270" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://akcdn.detik.net.id/community/media/visual/2023/08/07/nissa-sabyan-8_11.jpeg?w=700&q=90" alt="Channy" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Channy Ilmiati</h5>
+                            <p class="text-sm text-gray-500 mb-4">Teknis</p>
+                            <a href="https://wa.me/6287809068810" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-blue-400 to-blue-600 mb-4">
+                                <img src="https://akcdn.detik.net.id/community/media/visual/2024/12/28/go-yoon-jung-foto-instagram-goyounjung.jpeg?w=620&q=90" alt="Ayu" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Ayu Wani</h5>
+                            <p class="text-sm text-gray-500 mb-4">Analis</p>
+                            <a href="https://wa.me/6281386381950" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-indigo-400 to-indigo-600 mb-4">
+                                <img src="https://assets.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/jawapos/2019/01/come-back-song-joong-ki-akan-bermain-di-serial-drama-sejarah_m_196425.jpeg" alt="Muhammad Yusuf Kurniawan" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">M. Yusuf Kurniawan</h5>
+                            <p class="text-sm text-gray-500 mb-4">System Analyst</p>
+                            <a href="https://wa.me/6282162920989" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-indigo-400 to-indigo-600 mb-4">
+                                <img src="https://lh3.googleusercontent.com/d/1klR_P3OlYV58RnrBVtaFiHP1fiPByZPR" alt="Iskak" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Ishak Wijoyono, M.Pd</h5>
+                            <p class="text-sm text-gray-500 mb-4">Teknis</p>
+                            <a href="https://wa.me/6285772589192" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-indigo-400 to-indigo-600 mb-4">
+                                <img src="https://lh3.googleusercontent.com/d/1KbFpZ4jznk2mOYEDrLmPC42FBQM41-7X" alt="Muhammad Yusuf Kurniawan" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Okto</h5>
+                            <p class="text-sm text-gray-500 mb-4">Teknis</p>
+                            <a href="https://wa.me/6281213285137" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div> 
+                         <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-indigo-400 to-indigo-600 mb-4">
+                                <img src="https://lh3.googleusercontent.com/d/1tlnEp2zTm3XyXpCXLT42B9kAUP3HQlNj" alt="Rizki Setiadi" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Rizki Setiadi</h5>
+                            <p class="text-sm text-gray-500 mb-4">Teknis</p>
+                            <a href="https://wa.me/6285710019882" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>    
+                         <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center text-center transform transition hover:scale-105">
+                            <div class="h-20 w-20 rounded-full p-1 bg-gradient-to-tr from-indigo-400 to-indigo-600 mb-4">
+                                <img src="https://lh3.googleusercontent.com/d/14nQU9lIBA-jbRn3HORWQEvNi22fh0H0Z" alt="Ucu Syamsudin" class="h-full w-full rounded-full object-cover">
+                            </div>
+                            <h5 class="text-lg font-bold text-gray-900">Ucu Syamsudin</h5>
+                            <p class="text-sm text-gray-500 mb-4">Teknis</p>
+                            <a href="https://wa.me/628151870212" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-green-600 shadow-md transition">
+                                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> WhatsApp
+                            </a>
+                        </div>                                               
+                    </div>
+                </div>
+                
+                <div class="bg-gray-100 px-6 py-3 flex justify-end">
+                    <button type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none" onclick="closeDeveloperModal()">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MESSAGE MODAL -->
+    <div id="messageModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="msg-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity" aria-hidden="true" onclick="closeMessageModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full relative">
+                
+                <div class="bg-gray-800 px-6 py-4 flex justify-between items-center border-b border-gray-700">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-envelope mr-3 text-yellow-400"></i> Kirim Pesan Bantuan
+                    </h3>
+                    <button onclick="closeMessageModal()" class="text-gray-400 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 bg-white">
+                    <form id="helpMessageForm" onsubmit="handleSendMessage(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="msgNpsn" class="block text-sm font-medium text-gray-700 mb-1">NPSN</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-building text-gray-400 text-xs"></i>
+                                    </div>
+                                    <input type="number" name="msgNpsn" id="msgNpsn" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="Contoh: 2010XXXX" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="msgName" class="block text-sm font-medium text-gray-700 mb-1">Nama Pengunjung</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-user text-gray-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" name="msgName" id="msgName" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="Nama Lengkap Anda" required>
+                                </div>
+                            </div>
+                             <div>
+                                <label for="msgWa" class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fa-brands fa-whatsapp text-gray-400 text-sm"></i>
+                                    </div>
+                                    <input type="text" name="msgWa" id="msgWa" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md border py-2" placeholder="0812..." required>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="msgContent" class="block text-sm font-medium text-gray-700 mb-1">Pesan / Masalah</label>
+                                <div class="relative rounded-md shadow-sm">
+                                    <textarea name="msgContent" id="msgContent" rows="4" class="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md border p-3" placeholder="Jelaskan kendala yang Anda alami..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex space-x-3">
+                            <button type="submit" id="btnSendMsg" class="flex-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                                <i class="fa-solid fa-paper-plane mr-2 mt-0.5"></i> Kirim Pesan
+                            </button>
+                            <button type="button" onclick="openPublicMessagesModal()" class="flex-1 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition">
+                                <i class="fa-solid fa-comments mr-2 mt-0.5"></i> Lihat Pesan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GUIDE MODAL -->
+    <div id="guideModal" class="modal fixed z-50 inset-0 overflow-y-auto" aria-labelledby="guide-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-90 transition-opacity" aria-hidden="true" onclick="closeGuideModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-middle bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-5xl sm:w-full relative">
+                <div class="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-4 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <i class="fa-solid fa-book mr-3 text-orange-100"></i> Panduan Lengkap Erapor
+                    </h3>
+                    <button onclick="closeGuideModal()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6 bg-gray-50">
+                    <div class="w-full bg-gray-200 rounded-lg overflow-hidden shadow-inner border border-gray-300 relative">
+                        <div class="absolute inset-0 flex items-center justify-center z-0">
+                            <i class="fa-solid fa-circle-notch fa-spin text-gray-400 text-3xl"></i>
+                        </div>
+                        <iframe src="https://drive.google.com/file/d/1hE6WzqQMrV-ye0w61A_Lp6hrzd3_gFmy/preview" class="relative z-10 w-full h-[600px]" style="border:none;"></iframe>
+                    </div>
+                    <div class="mt-6 flex justify-center">
+                        <a href="https://drive.google.com/file/d/1hE6WzqQMrV-ye0w61A_Lp6hrzd3_gFmy/view" target="_blank" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition transform hover:-translate-y-1">
+                            <i class="fa-solid fa-cloud-arrow-down mr-2"></i> Download Dokumen Asli (Open New Tab)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxT2MJLHswBikxCFX3xXLhMRamUijwAUUfvZLcUlmr6Y0azYxgWT_NHsCaRyaChzoUYgA/exec';
+        const MESSAGE_API_URL = 'https://script.google.com/macros/s/AKfycbw9A7XEzsRBd7GqwDXTnE_dQgr6XYifdTiaNjZLP09flyzz94aHvFX-l-tQmdMuITxcgA/exec';
+        
+        // State Variables
+        let allData = [];
+        let filteredData = [];
+        let referenceCounts = {}; // Data Populasi dari Sheet Base
+        let currentPage = 1;
+        let rowsPerPage = 5; 
+        let myChart = null; 
+
+        // DOM Elements
+        const tableBody = document.getElementById('tableBody');
+        const loadingDiv = document.getElementById('loading');
+        const tableWrapper = document.getElementById('tableWrapper');
+        const noDataDiv = document.getElementById('noData');
+        const totalCountEl = document.getElementById('total-count');
+        const paginationFooter = document.getElementById('paginationFooter');
+        const rowsPerPageSelect = document.getElementById('rowsPerPage');
+        const summaryTableBody = document.getElementById('summaryTableBody');
+        const chartTitle = document.getElementById('chartTitle');
+        const headerCol1 = document.getElementById('headerCol1');
+        const headerCol2 = document.getElementById('headerCol2');
+        
+        // Filter & Search Elements
+        const searchInput = document.getElementById('searchInput');
+        const filterProvinsi = document.getElementById('filterProvinsi');
+        const filterKabKota = document.getElementById('filterKabKota');
+        const filterKurikulum = document.getElementById('filterKurikulum');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+        // Pagination Elements
+        const startIndexEl = document.getElementById('start-index');
+        const endIndexEl = document.getElementById('end-index');
+        const totalEntriesEl = document.getElementById('total-entries');
+        const paginationControls = document.getElementById('pagination-controls');
+        
+        // Modal Logic (Alerts)
+        const modal = document.getElementById('customModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+
+        // Modal Logic (Specific Modals)
+        const downloadModal = document.getElementById('downloadModal');
+        const developerModal = document.getElementById('developerModal');
+        const messageModal = document.getElementById('messageModal');
+        const guideModal = document.getElementById('guideModal');
+        const loginModal = document.getElementById('loginModal');
+        const adminModal = document.getElementById('adminModal');
+        const publicMessagesModal = document.getElementById('publicMessagesModal');
+
+        // --- GENERIC ALERT MODAL ---
+        function showModal(title, message, isError = true) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            const iconContainer = document.getElementById('modalIconContainer');
+            const icon = document.getElementById('modalIcon');
+            
+            if (isError) {
+                iconContainer.className = "mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10";
+                icon.className = "fa-solid fa-circle-exclamation text-red-600";
+            } else {
+                iconContainer.className = "mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10";
+                icon.className = "fa-solid fa-circle-check text-blue-600";
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // --- DOWNLOAD MODAL FUNCTIONS ---
+        function openDownloadModal() {
+            downloadModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDownloadModal() {
+            downloadModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- DEVELOPER MODAL FUNCTIONS ---
+        function openDeveloperModal() {
+            developerModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDeveloperModal() {
+            developerModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- MESSAGE MODAL FUNCTIONS ---
+        function openMessageModal() {
+            messageModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMessageModal() {
+            messageModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- GUIDE MODAL FUNCTIONS ---
+        function openGuideModal() {
+            guideModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeGuideModal() {
+            guideModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- LOGIN MODAL FUNCTIONS ---
+        function openLoginModal() {
+            loginModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLoginModal() {
+            loginModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('adminLoginForm').reset();
+        }
+
+        // --- ADMIN DASHBOARD MODAL FUNCTIONS ---
+        function openAdminModal() {
+            adminModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            fetchMessages(); 
+        }
+        function closeAdminModal() {
+            adminModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- PUBLIC MESSAGES MODAL FUNCTIONS ---
+        function openPublicMessagesModal() {
+            closeMessageModal();
+            publicMessagesModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            resetPublicSearch();
+        }
+        function closePublicMessagesModal() {
+            publicMessagesModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- SESSION MANAGEMENT & LOGIN HANDLER ---
+        function checkAdminAccess() {
+            const isLoggedIn = localStorage.getItem('isAdminLoggedIn');
+            if (isLoggedIn === 'true') {
+                openAdminModal();
+            } else {
+                openLoginModal();
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isAdminLoggedIn');
+            closeAdminModal();
+            showModal("Logout Berhasil", "Anda telah keluar dari panel admin.", false);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+            const btnLogin = document.getElementById('btnLogin');
+
+            const originalBtnContent = btnLogin.innerHTML;
+            btnLogin.disabled = true;
+            btnLogin.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Memproses...';
+
+            const formData = new FormData();
+            formData.append('action', 'login');
+            formData.append('username', user);
+            formData.append('password', pass);
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    localStorage.setItem('isAdminLoggedIn', 'true');
+                    closeLoginModal();
+                    openAdminModal();
+                    showModal("Login Berhasil", "Selamat datang kembali, Admin.", false);
+                } else {
+                    showModal("Login Gagal", "Username atau Password salah.", true);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal("Error", "Terjadi kesalahan koneksi.", true);
+            })
+            .finally(() => {
+                btnLogin.disabled = false;
+                btnLogin.innerHTML = originalBtnContent;
+            });
+        }
+
+        // --- FETCH MESSAGES FOR ADMIN ---
+        function fetchMessages() {
+            const tableBody = document.getElementById('messagesTableBody');
+            const loading = document.getElementById('loadingMessages');
+            const noData = document.getElementById('noMessages');
+
+            tableBody.innerHTML = '';
+            loading.classList.remove('hidden');
+            noData.classList.add('hidden');
+
+            const formData = new FormData();
+            formData.append('action', 'get_messages');
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.classList.add('hidden');
+                
+                if (data.result === 'success' && data.data && data.data.length > 0) {
+                    data.data.forEach(msg => {
+                        const tr = document.createElement('tr');
+                        const date = new Date(msg.timestamp);
+                        const formattedDate = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' });
+                        const waLink = msg.whatsapp ? `<a href="${msg.whatsapp}" target="_blank" class="text-green-600 hover:text-green-800 font-bold"><i class="fa-brands fa-whatsapp"></i> Chat</a>` : '-';
+
+                        tr.innerHTML = `
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 align-top">${formattedDate}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 align-top">${waLink}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-bold align-top">${msg.nama || '-'}</td>
+                            <td class="px-3 py-4 text-sm text-gray-500 max-w-xs break-words align-top">${msg.pesan || '-'}</td>
+                            <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                <div class="flex flex-col space-y-2">
+                                    <textarea id="reply-${msg.rowId}" class="w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 border p-2" rows="2" placeholder="Tulis jawaban...">${msg.jawaban || ''}</textarea>
+                                    <button onclick="handleSaveReply(${msg.rowId})" class="self-end px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition">
+                                        <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                } else {
+                    noData.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loading.classList.add('hidden');
+                noData.innerText = "Gagal memuat pesan.";
+                noData.classList.remove('hidden');
+            });
+        }
+
+        // --- FETCH PUBLIC MESSAGES ---
+        function resetPublicSearch() {
+            document.getElementById('publicSearchContainer').classList.remove('hidden');
+            document.getElementById('publicResultsContainer').classList.add('hidden');
+            document.getElementById('loadingPublicMessages').classList.add('hidden');
+            document.getElementById('publicNpsnInput').value = '';
+            document.getElementById('publicNpsnInput').focus();
+        }
+
+        function searchPublicMessages() {
+            const inputNpsn = document.getElementById('publicNpsnInput').value.trim();
+            if (!inputNpsn) {
+                showModal("Peringatan", "Harap masukkan NPSN terlebih dahulu.", true);
+                return;
+            }
+
+            document.getElementById('publicSearchContainer').classList.add('hidden');
+            document.getElementById('loadingPublicMessages').classList.remove('hidden');
+            document.getElementById('publicResultsContainer').classList.add('hidden');
+            document.getElementById('resultNpsnDisplay').textContent = inputNpsn;
+
+            const tableBody = document.getElementById('publicMessagesTableBody');
+            const noData = document.getElementById('noPublicMessages');
+            tableBody.innerHTML = '';
+            noData.classList.add('hidden');
+
+            const formData = new FormData();
+            formData.append('action', 'get_messages');
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loadingPublicMessages').classList.add('hidden');
+                document.getElementById('publicResultsContainer').classList.remove('hidden');
+                document.getElementById('publicResultsContainer').classList.add('flex'); 
+                
+                if (data.result === 'success' && data.data && data.data.length > 0) {
+                    const filteredData = data.data.filter(msg => String(msg.npsn).trim() === inputNpsn);
+                    if (filteredData.length > 0) {
+                        filteredData.forEach(msg => {
+                            const tr = document.createElement('tr');
+                            let jawabanHtml = '<span class="text-gray-400 italic flex items-center"><i class="fa-regular fa-clock mr-1"></i> Menunggu jawaban...</span>';
+                            if (msg.jawaban && msg.jawaban.trim() !== "") {
+                                jawabanHtml = `<div class="bg-teal-50 border-l-4 border-teal-500 p-3 text-gray-700 text-sm rounded shadow-sm">
+                                    <div class="font-bold text-teal-600 mb-1 text-xs uppercase">Jawaban Admin:</div>
+                                    <i class="fa-solid fa-check-circle text-teal-500 mr-1"></i> ${msg.jawaban}
+                                </div>`;
+                            }
+                            tr.innerHTML = `
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-bold text-teal-700 sm:pl-6 align-top font-mono">${msg.npsn || '-'}</td>
+                                <td class="px-3 py-4 text-sm text-gray-700 align-top break-words">${msg.pesan || '-'}</td>
+                                <td class="px-3 py-4 text-sm text-gray-700 align-top break-words">${jawabanHtml}</td>
+                            `;
+                            tableBody.appendChild(tr);
+                        });
+                    } else {
+                        noData.classList.remove('hidden');
+                    }
+                } else {
+                    noData.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loadingPublicMessages').classList.add('hidden');
+                document.getElementById('publicResultsContainer').classList.remove('hidden');
+                noData.innerText = "Gagal memuat data. Silakan coba lagi.";
+                noData.classList.remove('hidden');
+            });
+        }
+
+        // --- SAVE REPLY HANDLER ---
+        function handleSaveReply(rowId) {
+            const replyInput = document.getElementById(`reply-${rowId}`);
+            const replyText = replyInput.value;
+            const btnSave = replyInput.nextElementSibling; 
+
+            const originalBtnContent = btnSave.innerHTML;
+            btnSave.disabled = true;
+            btnSave.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+            const formData = new FormData();
+            formData.append('action', 'save_answer');
+            formData.append('row_index', rowId);
+            formData.append('jawaban', replyText);
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    showModal("Berhasil", "Jawaban berhasil disimpan.", false);
+                } else {
+                    showModal("Gagal", "Gagal menyimpan jawaban.", true);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal("Error", "Terjadi kesalahan koneksi.", true);
+            })
+            .finally(() => {
+                btnSave.disabled = false;
+                btnSave.innerHTML = originalBtnContent;
+            });
+        }
+
+
+        // --- SEND MESSAGE HANDLER ---
+        function handleSendMessage(e) {
+            e.preventDefault();
+            const npsnInput = document.getElementById('msgNpsn');
+            const nameInput = document.getElementById('msgName');
+            const waInput = document.getElementById('msgWa');
+            const contentInput = document.getElementById('msgContent');
+            const btnSend = document.getElementById('btnSendMsg');
+
+            const npsn = npsnInput.value;
+            const name = nameInput.value;
+            const content = contentInput.value;
+            let phone = waInput.value.trim();
+            phone = phone.replace(/\D/g, '');
+            if (phone.startsWith('0')) {
+                phone = '62' + phone.substring(1);
+            }
+            const waLink = `https://wa.me/${phone}`;
+
+            const originalBtnContent = btnSend.innerHTML;
+            btnSend.disabled = true;
+            btnSend.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Mengirim...';
+
+            const formData = new FormData();
+            formData.append('action', 'send_message');
+            formData.append('npsn', npsn);
+            formData.append('nama', name);
+            formData.append('whatsapp', waLink);
+            formData.append('pesan', content);
+
+            fetch(MESSAGE_API_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                 if (data.result === 'success') {
+                    closeMessageModal();
+                    showModal("Pesan Terkirim", `Terima kasih Sdr/i ${name}. Pesan Anda (via WA: ${phone}) telah kami terima.`, false);
+                    document.getElementById('helpMessageForm').reset();
+                 } else {
+                    throw new Error('Server returned error');
+                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal("Gagal Mengirim", "Terjadi kesalahan koneksi. Silakan coba lagi.", true);
+            })
+            .finally(() => {
+                btnSend.disabled = false;
+                btnSend.innerHTML = originalBtnContent;
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+            
+            searchInput.addEventListener('input', applyFilters);
+            filterProvinsi.addEventListener('change', applyFilters);
+            filterKabKota.addEventListener('change', applyFilters);
+            filterKurikulum.addEventListener('change', applyFilters);
+            
+            resetFiltersBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                filterProvinsi.value = '';
+                filterKabKota.value = '';
+                filterKurikulum.value = '';
+                applyFilters();
+            });
+
+            rowsPerPageSelect.addEventListener('change', (e) => {
+                rowsPerPage = parseInt(e.target.value);
+                currentPage = 1; 
+                renderTable();
+            });
+
+            document.getElementById('btn-prev-mobile').addEventListener('click', () => changePage(currentPage - 1));
+            document.getElementById('btn-next-mobile').addEventListener('click', () => changePage(currentPage + 1));
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    closeDownloadModal();
+                    closeDeveloperModal();
+                    closeMessageModal();
+                    closeGuideModal();
+                    closeLoginModal();
+                    closeAdminModal();
+                    closePublicMessagesModal();
+                }
+            });
+        });
+
+        const getRowValue = (row, key) => {
+            if (row[key] !== undefined) return row[key];
+            const lowerKey = key.toLowerCase();
+            const foundKey = Object.keys(row).find(k => k.toLowerCase() === lowerKey);
+            return foundKey ? row[foundKey] : '';
+        };
+
+        // --- MAIN FETCH DATA (UPDATED) ---
+        async function fetchData() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const json = await response.json();
+                
+                if (json.data && Array.isArray(json.data)) {
+                    allData = json.data;
+                } else if (Array.isArray(json)) {
+                    allData = json;
+                } else {
+                    allData = [json]; 
+                }
+
+                // --- UPDATE: SIMPAN DATA POPULASI DARI SERVER ---
+                if (json.refCounts) {
+                    referenceCounts = json.refCounts;
+                }
+
+                populateFilterOptions(allData);
+
+                filteredData = [...allData];
+                totalCountEl.textContent = allData.length;
+                
+                updateChart(filteredData); 
+                renderTable(); 
+                
+                loadingDiv.classList.add('hidden');
+                tableWrapper.classList.remove('hidden');
+                paginationFooter.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                loadingDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-500 text-4xl mb-4"></i><p class="text-red-500">Gagal memuat data: ${error.message}</p>`;
+                showModal("Gagal Memuat Data", "Terjadi kesalahan saat mengambil data dari Spreadsheet. Silakan periksa koneksi atau URL.", true);
+            }
+        }
+
+        // --- UPDATE CHART LOGIC (UPDATED WITH POPULATION PERCENTAGE) ---
+        function updateChart(data) {
+            const ctx = document.getElementById('provinceChart').getContext('2d');
+            
+            const selectedProv = filterProvinsi.value;
+            let groupByKey = 'Provinsi';
+            let labelText = 'Statistik Persebaran Provinsi (Persentase vs Total Sekolah)';
+
+            if (selectedProv) {
+                groupByKey = 'Kab/Kota'; 
+                labelText = `Statistik Kab/Kota di ${selectedProv} (Persentase vs Total Sekolah)`;
+            }
+
+            chartTitle.innerHTML = `<i class="fa-solid fa-chart-column mr-2 text-blue-500"></i> ${labelText}`;
+
+            // Hitung Jumlah Download
+            const counts = {};
+            data.forEach(row => {
+                const key = getRowValue(row, groupByKey) || 'Tidak Diketahui';
+                counts[key] = (counts[key] || 0) + 1;
+            });
+
+            // Update Table Summary
+            updateSummaryTable(counts, groupByKey);
+
+            // Persiapan Chart
+            const labels = Object.keys(counts).sort();
+            const dataValues = labels.map(label => counts[label]);
+
+            if (myChart) myChart.destroy();
+
+            const backgroundColors = dataValues.map(() => 'rgba(59, 130, 246, 0.7)'); 
+            const borderColors = dataValues.map(() => 'rgba(37, 99, 235, 1)'); 
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Sudah Download',
+                        data: dataValues,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    const downloaded = context.parsed.y;
+                                    
+                                    // --- LOGIKA BARU: BANDINGKAN DENGAN TOTAL POPULASI ---
+                                    const totalSchools = referenceCounts[label] || 0; 
+                                    let textDetail = "";
+
+                                    if (totalSchools > 0) {
+                                        const percentage = ((downloaded / totalSchools) * 100).toFixed(1);
+                                        textDetail = ` (${percentage}%) dari ${totalSchools} sekolah`;
+                                    } else {
+                                        textDetail = " (Total sekolah data Base tidak ditemukan)";
+                                    }
+                                    
+                                    return `Download: ${downloaded}${textDetail}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+
+        // --- UPDATE SUMMARY TABLE LOGIC (UPDATED WITH POPULATION PERCENTAGE) ---
+        function updateSummaryTable(dataCounts, headerName) {
+            summaryTableBody.innerHTML = '';
+            headerCol1.textContent = headerName;
+            headerCol2.textContent = headerName;
+
+            const entries = Object.entries(dataCounts).sort();
+            const mid = Math.ceil(entries.length / 2);
+            const leftColumn = entries.slice(0, mid);
+            const rightColumn = entries.slice(mid);
+
+            for (let i = 0; i < leftColumn.length; i++) {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition-colors";
+
+                // --- KOLOM KIRI ---
+                const [nameL, countL] = leftColumn[i];
+                
+                // Hitung Persentase Kiri
+                const totalL = referenceCounts[nameL] || 0;
+                let pctL = '-';
+                let displayCountL = countL;
+                
+                if (totalL > 0) {
+                    pctL = ((countL / totalL) * 100).toFixed(1) + '%';
+                    displayCountL = `${countL} <span class="text-xs text-gray-400 font-normal">/ ${totalL}</span>`;
+                } else {
+                    displayCountL = `${countL} <span class="text-xs text-gray-400 font-normal">/ ?</span>`;
+                }
+
+                // --- KOLOM KANAN ---
+                let nameR = '', countR = '', pctR = '';
+                let displayCountR = '';
+
+                if (i < rightColumn.length) {
+                    const [keyR, valR] = rightColumn[i];
+                    nameR = keyR;
+                    countR = valR;
+                    
+                    // Hitung Persentase Kanan
+                    const totalR = referenceCounts[nameR] || 0;
+                    pctR = '-';
+                    
+                    if (totalR > 0) {
+                        pctR = ((valR / totalR) * 100).toFixed(1) + '%';
+                        displayCountR = `${valR} <span class="text-xs text-gray-400 font-normal">/ ${totalR}</span>`;
+                    } else {
+                        displayCountR = `${valR} <span class="text-xs text-gray-400 font-normal">/ ?</span>`;
+                    }
+                }
+
+                tr.innerHTML = `
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-700">${nameL}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 font-bold text-center">${displayCountL}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-blue-600 text-right font-bold">${pctL}</td>
+                    
+                    <td class="w-1 bg-gray-50 border-l border-r border-gray-200"></td>
+                    
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-700">${nameR}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 font-bold text-center">${displayCountR}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-sm text-blue-600 text-right font-bold">${pctR}</td>
+                `;
+                summaryTableBody.appendChild(tr);
+            }
+        }
+
+        // Populate Dropdowns
+        function populateFilterOptions(data) {
+            const provinces = new Set();
+            const kabKotas = new Set();
+            const kurikulums = new Set();
+
+            data.forEach(row => {
+                const prov = getRowValue(row, 'Provinsi');
+                const kab = getRowValue(row, 'Kab/Kota');
+                const kur = getRowValue(row, 'Kurikulum');
+
+                if (prov) provinces.add(prov);
+                if (kab) kabKotas.add(kab);
+                if (kur) kurikulums.add(kur);
+            });
+
+            const fillSelect = (element, set) => {
+                const sorted = Array.from(set).sort();
+                sorted.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    element.appendChild(option);
+                });
+            };
+
+            fillSelect(filterProvinsi, provinces);
+            fillSelect(filterKabKota, kabKotas);
+            fillSelect(filterKurikulum, kurikulums);
+        }
+
+        // Apply Filters
+        function applyFilters() {
+            const searchVal = searchInput.value.toLowerCase();
+            const provVal = filterProvinsi.value;
+            const kabVal = filterKabKota.value;
+            const kurVal = filterKurikulum.value;
+
+            filteredData = allData.filter(row => {
+                const npsn = String(getRowValue(row, 'NPSN')).toLowerCase();
+                const sekolah = String(getRowValue(row, 'Sekolah')).toLowerCase();
+                const rowProv = String(getRowValue(row, 'Provinsi'));
+                const rowKab = String(getRowValue(row, 'Kab/Kota'));
+                const rowKur = String(getRowValue(row, 'Kurikulum'));
+
+                const matchSearch = npsn.includes(searchVal) || sekolah.includes(searchVal);
+                const matchProv = provVal === '' || rowProv === provVal;
+                const matchKab = kabVal === '' || rowKab === kabVal;
+                const matchKur = kurVal === '' || rowKur === kurVal;
+
+                return matchSearch && matchProv && matchKab && matchKur;
+            });
+
+            updateChart(filteredData); 
+
+            currentPage = 1; 
+            renderTable();
+        }
+
+        // Render Table
+        function renderTable() {
+            tableBody.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                noDataDiv.classList.remove('hidden');
+                tableWrapper.classList.add('hidden');
+                paginationFooter.classList.add('hidden');
+                return;
+            } else {
+                noDataDiv.classList.add('hidden');
+                tableWrapper.classList.remove('hidden');
+                paginationFooter.classList.remove('hidden');
+            }
+
+            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = Math.min(startIndex + rowsPerPage, filteredData.length);
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            startIndexEl.textContent = startIndex + 1;
+            endIndexEl.textContent = endIndex;
+            totalEntriesEl.textContent = filteredData.length;
+            document.getElementById('mobile-page-num').textContent = currentPage;
+
+            pageData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition-colors";
+
+                const npsn = getRowValue(row, 'NPSN');
+                const prov = getRowValue(row, 'Provinsi');
+                const kab = getRowValue(row, 'Kab/Kota');
+                const sekolah = getRowValue(row, 'Sekolah');
+                const status = row['TATUS'] || row['STATUS'] || getRowValue(row, 'Status'); 
+                const admin = getRowValue(row, 'NAMA ADMIN');
+                const jabatan = getRowValue(row, 'JABATAN');
+                const kurikulum = getRowValue(row, 'KURIKULUM');
+
+                let statusBadge = `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">${status}</span>`;
+                if(String(status).toLowerCase().includes('negeri')) {
+                    statusBadge = `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">${status}</span>`;
+                } else if (String(status).toLowerCase().includes('swasta')) {
+                    statusBadge = `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">${status}</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 font-mono">${npsn}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${prov}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${kab}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-bold">${sekolah}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${statusBadge}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><i class="fa-solid fa-user text-gray-400 mr-1"></i> ${admin}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${jabatan}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs">${kurikulum}</span></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            renderPaginationControls(totalPages);
+        }
+
+        // Pagination Controls
+        function renderPaginationControls(totalPages) {
+            paginationControls.innerHTML = '';
+
+            const prevBtn = createPageButton('Previous', currentPage > 1, () => changePage(currentPage - 1));
+            prevBtn.innerHTML = '<span class="sr-only">Previous</span><i class="fa-solid fa-chevron-left h-5 w-5 p-1"></i>';
+            prevBtn.className += " rounded-l-md";
+            paginationControls.appendChild(prevBtn);
+
+            let pagesToShow = [];
+            if (totalPages <= 7) {
+                for (let i = 1; i <= totalPages; i++) pagesToShow.push(i);
+            } else {
+                if (currentPage <= 4) {
+                    pagesToShow = [1, 2, 3, 4, 5, '...', totalPages];
+                } else if (currentPage >= totalPages - 3) {
+                    pagesToShow = [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+                } else {
+                    pagesToShow = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+                }
+            }
+
+            pagesToShow.forEach(p => {
+                if (p === '...') {
+                    const span = document.createElement('span');
+                    span.className = "relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700";
+                    span.innerText = '...';
+                    paginationControls.appendChild(span);
+                } else {
+                    const btn = createPageButton(p, true, () => changePage(p));
+                    if (p === currentPage) {
+                        btn.className = "z-10 bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium";
+                    }
+                    paginationControls.appendChild(btn);
+                }
+            });
+
+            const nextBtn = createPageButton('Next', currentPage < totalPages, () => changePage(currentPage + 1));
+            nextBtn.innerHTML = '<span class="sr-only">Next</span><i class="fa-solid fa-chevron-right h-5 w-5 p-1"></i>';
+            nextBtn.className += " rounded-r-md";
+            paginationControls.appendChild(nextBtn);
+
+            document.getElementById('btn-prev-mobile').disabled = currentPage === 1;
+            document.getElementById('btn-prev-mobile').classList.toggle('opacity-50', currentPage === 1);
+            document.getElementById('btn-next-mobile').disabled = currentPage === totalPages;
+            document.getElementById('btn-next-mobile').classList.toggle('opacity-50', currentPage === totalPages);
+        }
+
+        function createPageButton(text, isEnabled, onClick) {
+            const btn = document.createElement('button');
+            btn.className = "relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20";
+            if (!isEnabled) {
+                btn.className += " cursor-not-allowed opacity-50";
+                btn.disabled = true;
+            } else {
+                btn.onclick = onClick;
+            }
+            btn.innerText = text;
+            return btn;
+        }
+
+        function changePage(newPage) {
+            currentPage = newPage;
+            renderTable();
+        }
+
+    </script>
+</body>
+</html>
