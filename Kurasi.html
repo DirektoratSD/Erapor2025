@@ -159,14 +159,13 @@
                 <thead>
                     <tr class="bg-gray-100 print:bg-gray-200">
                         <th class="border border-gray-300 px-4 py-2 w-10 text-center align-top">No.</th>
-                        <!-- Ubah lebar menjadi persentase dan biarkan browser mengatur wrapping -->
                         <th class="border border-gray-300 px-4 py-2 w-1/3 text-left align-top">Nama Lengkap</th>
                         <th class="border border-gray-300 px-4 py-2 w-1/3 text-left align-top">Instansi</th>
                         <th class="border border-gray-300 px-4 py-2 text-center align-top">Tanda Tangan</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <!-- Baris akan ditambahkan via JavaScript -->
+                    <!-- Bangbin -->
                 </tbody>
             </table>
         </div>
@@ -196,7 +195,7 @@
 
         const initialData = [
             { name: "Waluyo, SS, ME", instansi: "Direktorat Sekolah Dasar" },
-            { name: "Yusuf Kurniawan", instansi: "SDN Petamburan 01 Jakarta Pusat" }
+            { name: "Yusuf Kurniawan,M.Pd", instansi: "SDN Petamburan 01 Jakarta Pusat" }
         ];
 
         function showModal(title, message, type = 'info') {
@@ -293,14 +292,10 @@
             const btnId = `btn-save-${rowCount}`;
             const statusId = `status-${rowCount}`;
             const sigCellId = `sig-cell-${rowCount}`;
-
-            // Tentukan apakah baris ini sudah tersimpan
             const isSaved = signatureUrl && signatureUrl.includes('googleusercontent.com');
 
-            // HTML untuk kolom tanda tangan
             let signatureHtml = '';
             if (isSaved) {
-                // TAMPILAN JIKA SUDAH DISIMPAN
                 signatureHtml = `
                     <div class="flex flex-col items-center gap-2">
                         <img src="${signatureUrl}" class="signature-img rounded" alt="Tanda Tangan ${name}">
@@ -314,7 +309,6 @@
                     </div>
                 `;
             } else {
-                // TAMPILAN JIKA BELUM DISIMPAN (CANVAS)
                 signatureHtml = `
                     <canvas id="${canvasId}" width="200" height="80" class="signature-pad rounded"></canvas>
                     <div class="flex items-center gap-3 mt-1 no-print w-full justify-center">
@@ -330,8 +324,6 @@
                 `;
             }
 
-            // Menggunakan Textarea agar bisa wrap di layar kecil
-            // class resize-none agar user tidak mengubah ukuran manual, overflow-hidden agar rapi
             row.setAttribute('id', `row-${rowCount}`);
             row.innerHTML = `
                 <td class="border border-gray-300 px-2 py-2 text-center bg-white align-top">${rowCount}</td>
@@ -357,18 +349,15 @@
             }
         }
 
-        // Fungsi untuk reset baris (Hapus tanda tangan yang tersimpan)
         function resetSignature(id) {
             const sigCell = document.getElementById(`sig-cell-${id}`);
             const canvasId = `sig-canvas-${id}`;
             const btnId = `btn-save-${id}`;
             const statusId = `status-${id}`;
 
-            // Buka kunci input
             document.getElementById(`name-${id}`).disabled = false;
             document.getElementById(`instansi-${id}`).disabled = false;
 
-            // Inject HTML Canvas kembali
             sigCell.innerHTML = `
                 <canvas id="${canvasId}" width="200" height="80" class="signature-pad rounded"></canvas>
                 <div class="flex items-center gap-3 mt-1 no-print w-full justify-center">
