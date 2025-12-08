@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erapor 2025</title>
+    <title>Erapor 2025 - Khusus DKI Jakarta</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -95,7 +95,7 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center text-blue-600">
                         <i class="fa-solid fa-school fa-2x mr-3"></i>
-                        <span class="font-bold text-xl tracking-tight text-gray-900">Erapor<span class="text-blue-600">2025</span></span>
+                        <span class="font-bold text-xl tracking-tight text-gray-900">Erapor<span class="text-blue-600">2025</span> <span class="text-sm font-normal text-gray-500 ml-2 border-l pl-2 border-gray-300">DKI Jakarta Only</span></span>
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
@@ -117,10 +117,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                 <span class="block xl:inline">Erapor SD 2025</span>
-                <span class="block text-blue-600 xl:inline">Direktorat SD</span>
+                <span class="block text-blue-600 xl:inline">DKI Jakarta</span>
             </h1>
             <p class="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                Sistem informasi terintegrasi menampilkan data real-time pengguna Erapor SD 2025. Gunakan filter di bawah untuk menyaring data spesifik.
+                Menampilkan data unik (tanpa duplikasi NPSN) khusus untuk wilayah Provinsi DKI Jakarta.
             </p>
         </div>
     </div>
@@ -140,7 +140,7 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Download</dt>
+                                <dt class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Data Unik</dt>
                                 <dd class="text-2xl font-extrabold text-gray-900" id="total-count">0</dd>
                             </dl>
                         </div>
@@ -224,7 +224,7 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <!-- Kolom Kiri -->
-                                <th id="headerCol1" class="px-4 py-2 text-left font-semibold text-gray-600">Provinsi</th>
+                                <th id="headerCol1" class="px-4 py-2 text-left font-semibold text-gray-600">Wilayah</th>
                                 <th class="px-4 py-2 text-center font-semibold text-gray-600">Dl / Tot</th>
                                 <th class="px-4 py-2 text-right font-semibold text-gray-600">%</th>
                                 
@@ -232,7 +232,7 @@
                                 <th class="w-1 bg-gray-100 p-0 border-l border-r border-gray-200"></th>
                                 
                                 <!-- Kolom Kanan -->
-                                <th id="headerCol2" class="px-4 py-2 text-left font-semibold text-gray-600">Provinsi</th>
+                                <th id="headerCol2" class="px-4 py-2 text-left font-semibold text-gray-600">Wilayah</th>
                                 <th class="px-4 py-2 text-center font-semibold text-gray-600">Dl / Tot</th>
                                 <th class="px-4 py-2 text-right font-semibold text-gray-600">%</th>
                             </tr>
@@ -263,9 +263,9 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- Filter Provinsi -->
                         <div class="relative">
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Provinsi</label>
-                            <select id="filterProvinsi" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border">
-                                <option value="">Semua Provinsi</option>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Provinsi (Otomatis DKI)</label>
+                            <select id="filterProvinsi" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border bg-gray-100" disabled>
+                                <option value="">DKI Jakarta</option>
                             </select>
                         </div>
                         
@@ -320,7 +320,7 @@
             <!-- Loading State -->
             <div id="loading" class="p-12 text-center">
                 <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-600 mb-4"></i>
-                <p class="text-gray-500">Mengambil data dari Database...</p>
+                <p class="text-gray-500">Mengambil data dan memfilter duplikat...</p>
             </div>
 
             <!-- Table Container -->
@@ -1354,7 +1354,7 @@
             
             resetFiltersBtn.addEventListener('click', () => {
                 searchInput.value = '';
-                filterProvinsi.value = '';
+                // filterProvinsi.value = ''; // Jangan reset provinsi jika kita memaksa DKI
                 filterKabKota.value = '';
                 filterKurikulum.value = '';
                 applyFilters();
@@ -1390,7 +1390,7 @@
             return foundKey ? row[foundKey] : '';
         };
 
-        // --- MAIN FETCH DATA (UPDATED) ---
+        // --- MAIN FETCH DATA (UPDATED LOGIC FOR DKI & UNIQUE) ---
         async function fetchData() {
             try {
                 const response = await fetch(API_URL);
@@ -1398,18 +1398,42 @@
                 
                 const json = await response.json();
                 
+                // Ambil Data Mentah
+                let rawData = [];
                 if (json.data && Array.isArray(json.data)) {
-                    allData = json.data;
+                    rawData = json.data;
                 } else if (Array.isArray(json)) {
-                    allData = json;
+                    rawData = json;
                 } else {
-                    allData = [json]; 
+                    rawData = [json]; 
                 }
 
-                // --- UPDATE: SIMPAN DATA POPULASI DARI SERVER ---
                 if (json.refCounts) {
                     referenceCounts = json.refCounts;
                 }
+
+                // --- 1. FILTER KHUSUS DKI JAKARTA ---
+                let dkiData = rawData.filter(row => {
+                    const prov = String(getRowValue(row, 'Provinsi')).toLowerCase();
+                    // Cek apakah mengandung kata "dki" atau "jakarta"
+                    return prov.includes('dki') || prov.includes('jakarta');
+                });
+
+                // --- 2. HAPUS DUPLIKAT NPSN ---
+                const uniqueNpsnMap = new Map();
+                let uniqueData = [];
+
+                dkiData.forEach(item => {
+                    const npsn = getRowValue(item, 'NPSN');
+                    // Jika NPSN belum ada di Map, tambahkan ke uniqueData
+                    if (npsn && !uniqueNpsnMap.has(npsn)) {
+                        uniqueNpsnMap.set(npsn, true);
+                        uniqueData.push(item);
+                    }
+                });
+
+                // Assign data yang sudah bersih ke variabel global
+                allData = uniqueData;
 
                 populateFilterOptions(allData);
 
@@ -1435,12 +1459,13 @@
             const ctx = document.getElementById('provinceChart').getContext('2d');
             
             const selectedProv = filterProvinsi.value;
-            let groupByKey = 'Provinsi';
-            let labelText = 'Statistik Persebaran Provinsi (Persentase vs Total Sekolah)';
+            let groupByKey = 'Kab/Kota'; // Default ke Kab/Kota karena datanya sudah spesifik Provinsi
+            let labelText = 'Statistik Sebaran Wilayah DKI Jakarta';
 
             if (selectedProv) {
+                 // Logic tetap sama jika user somehow bisa select provinsi lain, tapi disini sudah dilock DKI
                 groupByKey = 'Kab/Kota'; 
-                labelText = `Statistik Kab/Kota di ${selectedProv} (Persentase vs Total Sekolah)`;
+                labelText = `Statistik Kab/Kota di ${selectedProv}`;
             }
 
             chartTitle.innerHTML = `<i class="fa-solid fa-chart-column mr-2 text-blue-500"></i> ${labelText}`;
@@ -1487,7 +1512,6 @@
                                     let label = context.label || '';
                                     const downloaded = context.parsed.y;
                                     
-                                    // --- LOGIKA BARU: BANDINGKAN DENGAN TOTAL POPULASI ---
                                     const totalSchools = referenceCounts[label] || 0; 
                                     let textDetail = "";
 
@@ -1495,7 +1519,7 @@
                                         const percentage = ((downloaded / totalSchools) * 100).toFixed(1);
                                         textDetail = ` (${percentage}%) dari ${totalSchools} sekolah`;
                                     } else {
-                                        textDetail = " (Total sekolah data Base tidak ditemukan)";
+                                        textDetail = "";
                                     }
                                     
                                     return `Download: ${downloaded}${textDetail}`;
@@ -1602,6 +1626,7 @@
                 });
             };
 
+            // Karena kita sudah filter DKI di awal, dropdown Provinsi hanya akan berisi DKI Jakarta
             fillSelect(filterProvinsi, provinces);
             fillSelect(filterKabKota, kabKotas);
             fillSelect(filterKurikulum, kurikulums);
